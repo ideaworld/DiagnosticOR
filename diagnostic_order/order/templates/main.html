@@ -1,0 +1,21 @@
+<div class="item" ng-repeat="order in orders">
+	<div class="head-bar">
+		<a href="#/order/:1">Check</a>
+	</div>
+	<div class="item-info">
+		<div class="row">
+			<div class="col-sm-3 col-xs-3 col-mg-3 col-lg-3">
+				{{order.name}}
+			</div>
+			<div class="col-sm-3 col-xs-3 col-mg-3 col-lg-3">
+				{{order.Order}}
+			</div>
+			<div class="col-sm-3 col-xs-3 col-mg-3 col-lg-3">
+				{{order.Time}}
+			</div>
+			<div class="col-sm-3 col-xs-3 col-mg-3 col-lg-3">
+				<span class="label order-{{order.Status}}">{{order.Status}}</span>
+			</div>
+		</div>
+	</div>
+</div><!-- div.item -->

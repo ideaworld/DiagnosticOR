@@ -1,0 +1,242 @@
+<div ng-controller="NewOrdCtrl" class="edit-panel">
+  <div class="new_Title">
+    <h2 id = "new_order_label" class="new_order_label" style="text-align:center;">
+      New Order
+    </h2>
+  </div>
+  <form>
+    <hr/>
+    <div class="new_diaorder">
+      <!--Id-->
+      <div class='input-item row'>
+        <label id="Id" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Identifier:</label>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+          <div class="input-group">
+            <span class="input-group-addon">system</span>
+            <input type="text" id="id_system" class="form-control">  
+          </div>
+          <br>
+          <div class="input-group">
+            <span class="input-group-addon">value</span>
+            <input type="text" id="id_value" class="form-control">
+          </div>
+          <br>
+        </div>
+        
+      </div>
+      <!-- Subject -->
+      <div class="input-item row">
+        <div>
+          <label class="col-xs-4 col-sm-4 col-md-4 col-lg-4">*Subject:</label>
+          <div class="input-sm col-xs-3 col-sm-3 col-md-3 col-lg-3">
+          <select name="Subject" id="subject_sel" class="input-sm form-control">
+            <option value="Patient">Patient</option>
+            <option value="Group">Group</option>
+            <option value="Location">Location</option>
+            <option value="Device">Device</option>
+          </select>
+          </div>
+          <button class="btn-info col-sm-2 col-xs-2 col-mg-2 col-lg-2 col-lg-offset-1" type="text" data-toggle="modal" data-target="#subject_modal">
+          Reference
+          </button>
+
+          <div class="modal fade" id="subject_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                   <button type="button" class="close" 
+                      data-dismiss="modal" aria-hidden="true">
+                         &times;
+                   </button>
+                   <h4 class="modal-title" id="subject_title">
+                      Patient
+                   </h4>
+                </div>
+                <div class="modal-body" id="subject_content">
+                  <span id="sub_c"></span>
+                  <ul id="sub_id" class="list-group">
+                  </ul>
+                </div>
+              </div><!-- /.modal-content -->
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div>
+          <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" ></span>
+          <p name="subject" id="subject_chosen" class="col-sm-6 col-xs-6 col-mg-6 col-lg-6">
+          </p>
+          <span id='id_subject' hidden></span>
+        </div>
+      </div>
+      <!--target-->
+      <div class="input-item row">
+        <label id="Target" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Sequencing Laboratory:</label>
+        <div class="input-sm col-xs-3 col-sm-3 col-md-3 col-lg-3">
+          <select name="target" id="target_sel" class="input-sm form-control">
+          <option value="Organization">Organization</option>
+          <option value="Practitioner">Practitioner</option>     
+          <option value="Device">Device</option>
+          </select>
+        </div>
+        <button class="btn-info col-sm-2 col-xs-2 col-mg-2 col-lg-2 col-lg-offset-1" type="text" data-toggle="modal" data-target="#target_modal">
+        Reference
+        </button>
+
+        <div class="modal fade" id="target_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+               <button type="button" class="close" 
+                      data-dismiss="modal" aria-hidden="true">
+                         &times;
+                </button>
+                <h4 class="modal-title" id="target_title">Target</h4>
+              </div>
+              <div class="modal-body" id="target_content">
+                <span id="target_c"></span>
+                <ul id="target_id" class="list-group"></ul>
+              </div>
+            </div><!-- /.modal-content -->
+          </div>
+        </div>
+        <hr>
+        <div>
+          <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></span>
+          <p name="target" id="target_chosen" class="col-sm-6 col-xs-6 col-mg-6 col-lg-6"></p>
+          <span id='id_target' hidden></span>
+        </div>
+      </div>
+      <!-- Encounter -->
+      <div class="input-item row">
+        <div>   
+        <label class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Encounter</label>
+        <p id="type_chosen" class="col-sm-4 col-xs-4 col-mg-4 col-lg-4"></p>
+        <span id='id_encounter' hidden></span>
+        <button class="btn-info col-sm-2 col-xs-2 col-mg-2 col-lg-2" type="text" data-toggle="modal" data-target="#type_modal">
+          Reference
+        </button> 
+        </div>     
+        <div class="modal fade" id="type_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                 <button type="button" class="close" 
+                    data-dismiss="modal" aria-hidden="true">
+                       &times;
+                 </button>
+                 <h4 class="modal-title" id="encounter_title">
+                    Encounter
+                 </h4>
+              </div>
+              <div class="modal-body" id="subject_content">
+                <span id="type_c"></span>
+                <ul id="type_id" class="list-group">
+                </ul>
+              </div>
+            </div><!-- /.modal-content -->
+          </div>
+        </div>
+        
+      </div> 
+      <!-- Reason -->
+      <div class="input-item row">      
+        <label class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Reason</label>
+        {% include 'CodeableConcept.html' %}
+      </div>      
+
+      <!-- Specimen spec >
+      <div class="input-item row">
+        <label class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Specimen</label>
+        <p id="spec_chosen" class="col-sm-4 col-xs-4 col-mg-4 col-lg-4"></p>
+        <span id='id_spec' hidden></span>
+        <button class="btn-info col-sm-2 col-xs-2 col-mg-2 col-lg-2" type="text" data-toggle="modal" data-target="#spec_modal">
+          Reference
+        </button>
+
+        <div class="modal fade" id="spec_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                 <button type="button" class="close" 
+                    data-dismiss="modal" aria-hidden="true">
+                       &times;
+                 </button>
+                 <h4 class="modal-title" id="spec_title">
+                    Specimen
+                 </h4>
+              </div>
+              <div class="modal-body" id="subject_content">
+                <span id="spec_c"></span>
+                <ul id="spec_id" class="list-group">
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div-->
+
+
+      <!-- Priority prio -->
+      <div class="input-item row">
+        <label class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Priority</label>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <select id="prio_sel" class="form-control input-sm">
+            <option value="null">--</option>
+            <option value="routine">routine</option>
+            <option value="urgent">urgent</option>
+            <option value="stat">stat</option>
+            <option value="asap">asap</option>
+        </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="new_digorder_item" id = "new_digorder_item">  
+      <div class="row" id = "new_digorder_item_0">
+        {% include 'item_temp.html' %}
+      </div>
+      <div class="modal fade" id="item_obseq_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+           <h4 class="modal-title" id="item_obseq_title">Observation For Sequence</h4>
+         </div>
+          <div class="modal-body" id="obseq_content">
+           <span id="sobseq_c"></span>
+           <ul id="item_obseq_id" class="list-group"></ul>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="add_item row">
+      
+      <button class="btn btn-primary col-xs-2 col-sm-2 col-md-2 col-lg-2 col-lg-offset-5" id="addBtn" onclick="add_item()">Add Item</button>
+
+      <button class="btn btn-warning col-xs-2 col-sm-2 col-md-2 col-lg-2 col-lg-offset-1" onclick="del_item()" id="del_item_id" style="display:none;">Del Item</button>
+    </div>
+
+    <div class="order_other row"> 
+      <hr/>
+      <h3 class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Note</h3>
+      <div class="row">
+        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></span>
+        <div class="input-item col-sm-6 col-xs-6 col-mg-6 col-lg-6">
+          <textarea  class="form-control" id="note_id" rows="4"> </textarea>
+        </div>
+      </div>
+      <hr/>
+      <div class="alert alert-success hint-msg hide">
+        Success
+      </div>
+      <div class="input-item row">
+        <button class="btn btn-success" id="btr_sub" onClick="Submit()">Submit</button>
+        <!--button hidden class="btn btn-primary" id="btr_save" onclick="save()">Save</button-->
+      </div>
+    </div>
+  </form>  
+</div>
+

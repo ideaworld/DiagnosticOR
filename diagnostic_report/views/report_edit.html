@@ -1,0 +1,170 @@
+<!-- author: Bowen -->
+<div class="edit-panel" id="report_edit">
+<!--
+	<div class="input-item row">
+		<label for="subject" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Category: </label>
+		<input class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="subject" ng-model="category" type="text" placeholder="Category">
+	</div>
+-->
+	<div class="input-item row">
+	<h3>Code</h3>
+		<label for="category" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Code: </label>
+		<input class="col-xs-6 col-sm-6 col-md-6 col-lg-6" type="text" id="category" ng-model="code" placeholder="Code">
+		<label for="category" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">System: </label>
+		<input class="col-xs-6 col-sm-6 col-md-6 col-lg-6" type="text" id="category" ng-model="code_system" placeholder="Code">
+		<label for="category" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Display: </label>
+		<input class="col-xs-6 col-sm-6 col-md-6 col-lg-6" type="text" id="category" ng-model="code_display" placeholder="Code">
+	</div>
+	<div class="input-item row">
+		<label for="encounter" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Encounter: </label>
+		<input class="col-xs-6 col-sm-6 col-md-6 col-lg-6" type="text" id="encounter" ng-model="encounter" placeholder="Encounter">
+	</div>
+	<div class="input-item row">
+		<label for="code" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Subject: </label>
+		<input class="col-xs-6 col-sm-6 col-md-6 col-lg-6" type="text" id="code" ng-model="subject" placeholder="Subject">
+	</div>
+	<div class="input-item row">
+		<label for="performer" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Performer: </label>
+		<input class="col-xs-6 col-sm-6 col-md-6 col-lg-6" type="text" id="performer" ng-model="performer" placeholder="Performer">
+	</div>
+	<div class="input-item row">
+		<label for="effective" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Effective: </label>
+		<input class="col-xs-6 col-sm-6 col-md-6 col-lg-6" type="text" id="effective" ng-model="effective" placeholder="Effective">
+	</div>
+	<div class="input-item row">
+		<label for="issued" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Issued</label>
+		<input class="col-xs-6 col-sm-6 col-md-6 col-lg-6" type="text" id="issued" ng-model="issued" placeholder="Issued">
+	</div>
+	<div class="input-item row">
+		<label for="specimen" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Specimen: </label>
+		<input class="col-xs-6 col-sm-6 col-md-6 col-lg-6" type="text" id="specimen" ng-model="specimen" placeholder="Specimen">
+	</div>
+	<div class="input-item row">
+		<h3 for="result" class="col-xs-2 col-sm-2 col-md-2 col-lg-2">Results</h3>
+		<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+		 <div id="result-obs">
+		 	<div class="obs-item"  ng-repeat="ob in observation_list">
+		 		<div class="obs-block row">
+				<label class="col-xs-8 col-sm-8 col-md-8 col-lg-8">{{ob.sequence}}</label>
+				<input id="ob-status" class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></input>
+				<span id="ob-status-id" hidden>{{ob.id}}</span>
+				</div>
+			</div>
+		</div>
+		<div id ="add_observation" ng-if="add_obs == 0">
+			<div id="add_observation_self" hidden>
+				<div>
+					<label>Genetics Gene</label>
+					<br>
+					<input id="gene" placeholder="BRCA2"></input>
+				</div>
+				<div>
+					<label>Genetics Variation HGVS</label>
+					<br>
+					<input id="variation" placeholder="c.7024C>T"></input>
+				</div>
+				<div>
+					<label>Genetics Amino Acid Variation</label>
+					<br>
+					<input id="amino" placeholder="p.Gln2342"></input>
+				</div>
+				
+				<div>
+					<label>Result</label>
+					<br>
+					<input placeholder="Positive"></input>
+				</div>
+			</div>
+			<div id="add_observation_self_0">
+				<div>
+					<label>Genetics Gene</label>
+					<br>
+					<input id="gene" placeholder="BRCA2"></input>
+				</div>
+				<div>
+					<label>Genetics Variation HGVS</label>
+					<br>
+					<input id="variation" placeholder="c.7024C>T"></input>
+				</div>
+				<div>
+					<label>Genetics Amino Acid Variation</label>
+					<br>
+					<input id="amino" placeholder="p.Gln2342"></input>
+				</div>
+				
+				<div>
+					<label>Result</label>
+					<br>
+					<input id="result" placeholder="Positive"></input>
+				</div>
+			</div>
+
+			<div class="add-new" id="add_obs_div">
+			<button class="btn btn-primary" type="button" ng-click="add_observation()">Add</button>
+			</div>
+		</div>
+		<!--
+		<div class="add-new pull-right" id="add-observation-btn"><button class="btn btn-primary" type="button" ng-click="new_observation_modal()">Add Observation</button></div>
+		-->
+		</div>
+	</div>
+	<div class="input-item row" ng-if="add_obs != 0">
+		<label for="result" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Famiy</label>
+		
+		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+		<div classs="obs-item" ng-repeat="member in addfamily_member">{{member}}</div>
+		</div>
+		<div class="add-new pull-right" id="add-observation-btn"><button class="btn btn-primary" type="button" ng-click="new_family_modal()">Add</button></div>
+	</div>
+	<div class="input-item row">
+		<label for="conclusion" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Conclusion</label>
+		<textarea class="col-xs-6 col-sm-6 col-md-6 col-lg-6" name="conclusion" ng-model="conclusion" id="conclusion" cols="20" rows="2" placeholder="Conclusion"></textarea>
+	</div>
+	<div class="input-item row">
+		<label for="cstatus" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Status</label>
+		<select ng-modal="new_status" name="status" id="cstatus">
+			<option value="Partial">Partial</option>
+			<option value="Final">Final</option>
+			<option value="Corrected">Corrected</option>
+			<option value="Appended">Appended</option>
+			<option value="Cancelled">Cancelled</option>
+		</select>
+	</div>
+	<div class="alert alert-success hint-msg hide"></div>
+	<div class="btn-area">
+		<button class="btn btn-info" ng-click="go_index()">Back</button>
+		<button class="btn btn-primary pull-right" ng-click="submit()">Save</button>
+	</div><!-- div.btn-area -->
+</div><!-- div.edit-panel#report_edit -->
+<div class="modal fade" id="add-observation">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close_new_observation()"><span aria-hidden="true">&times;</span></button>
+        		<h4 class="modal-title">New Observation</h4>
+			</div><!-- div.modal-header -->
+			<div class="modal-body">
+				<input type="text" placeholder="search observation" ng-model="observation">
+			</div><!-- div.modal-body -->
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button class="btn btn-success" type="button" ng-click="new_obs_add()">Add</button>
+			</div>
+		</div>
+	</div>
+</div><!--div#add-observation -->
+<div class="modal fade" id="add-family">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close_new_observation()"><span aria-hidden="true">&times;</span></button>
+        		<h4 class="modal-title">New Family Member</h4>
+			</div>
+			<div class="modal-body">
+			<div class="mem-item" ng-repeat="mem in family_members">
+				<button  class="btn btn-mem" type="button" ng-click="add_family(mem)" >{{mem}}</button>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>

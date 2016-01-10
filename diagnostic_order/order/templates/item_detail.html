@@ -1,0 +1,89 @@
+<div class="detail-info" id="order-info">
+			<span class="label order-{{status}} label-right">{{status}}</span>
+				<div class="info-item"><span class="item-name">Subject: </span><span>{{subject}}</span></div>
+				<div class="info-item"><span class="item-name">Orderer: </span><span>{{orderer}}</span></div>
+
+				{% if encounter != '' %}
+				<div class="info-item"><span class="item-name">Encounter: </span><span>{{encounter}}</span></div>
+				{% endif %}
+	
+				{% if reason != '' %}
+				<div class="info-item"><span class="item-name">Reason: </span><div>{{reason}}</div></div>
+				{% endif %}
+
+				{% if specimen != '' %}
+				<div class="info-item"><span class="item-name">Specimen: </span><span>{{specimen}}</span></div>
+				{% endif %}
+
+				{% if priority != '' %}
+				<div class="info-item"><span class="item-name">Priority: </span><span>{{priority}}</span></div>
+				{% endif %}
+
+				{% for e in event_list %}
+				<div class="info-item">
+					<div class="item-title">Event</div>
+					<div class="sub-item"><span class="item-name">Status: </span>{{e.status}}</div>
+					<div class="sub-item"><span class="item-name">DateTime: </span><span>{{e.dateTime}}</span></div>
+					<div class="sub-item"><span class="item-name">Actor: </span><span>{{e.actor.reference}}</span></div>
+				</div>
+				{% endfor %}
+				{% for item in item_list%}
+				<div class="info-item">
+					<div class="item-title">Item</div>
+					{% for s in item.extension %}
+						{% if s.url == 'status' %}
+						<span class="label order-{{status}} label-right">{{s.valueCode}}</span>
+						{% endif %}
+					{% endfor %}
+					<div class="sub-item"><span class="item-name">Code: </span>
+					<span>
+					{% for e in item.extension%}
+						{% if e.url == 'code'%}
+							{% for c in e.valueCodeableConcept.coding %}
+								{{c.code}}
+							{% endfor %} 
+						{% endif %}
+					{% endfor %}
+					</span>
+					</div>
+					{% for s in item.extension %}
+						{% if s.url == 'specimen' and s.valueReference.reference != '' %}
+							<div class="sub-item"><span class="item-name">Specimen: </span><span>{{s.valueReference.reference}}</span></div>
+						{% endif %}
+					{% endfor %}
+					<div class="sub-item">
+					<span class="item-name">obsForSequence: </span>
+					<div>
+						{% for s in item.extension %}
+						{% if s.url == 'obsForSequence' and s.valueReference.reference != '' %}
+							{{s.valueReference.reference}}
+
+						{% endif %}
+						{% endfor %}
+					</div>
+					</div>
+						
+					
+					<!--div class="sub-item"><span class="item-name">BodySite: </span><span>{{item_body}}</span></div-->
+
+					<!--div class="sub-item">
+						<div class="sub-item-title">Event</div>
+						<span class="label order-{{status}} label-right">{{status}}</span>
+						<div class="sub-sub-item"><span class="item-name">Description: </span></div>
+						<div class="sub-sub-item"><span class="item-name">DateTime: </span></div>
+						<div class="sub-sub-item"><span class="item-name">Actor: </span></div>
+					</div-->
+				</div>
+				{% endfor %}
+				<div class="info-item">
+					<div class="item-title">Note</div>
+					<span>
+						{{note}}
+					</span>
+				</div>
+				{% if status == 'draft' %}
+				<div>
+					<a hidden class='btn btn-primary' href="{% url 'edit' id %}">Edit</a>
+				</div>
+				{% endif %}
+			</div><!-- div.detail-info#order -->

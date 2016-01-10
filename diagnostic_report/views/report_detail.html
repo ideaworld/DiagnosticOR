@@ -1,0 +1,54 @@
+<!-- author: Bowen -->
+<div class="detail-info" id="order-info">
+	<span class="label report-{{reports.status}} label-right">{{reports.status}}</span>
+	<div class="info-item"><span class="item-name">ID: </span><span>{{report_id}}</span></div>
+	<!--<div class="info-item"><span class="item-name">Category: </span><span>{{reports.category.coding[0].display}}</span></div>-->
+	<div class="info-item"><span class="item-name">Code: </span>
+	<div ng-repeat='report in reports.code.coding'>
+	<div>{{report.code}}  </div>
+	<div>{{report.system}}  </div>
+	<div>{{report.display}}  </div>
+	</div>
+	</div>
+	<div class="info-item"><span class="item-name">Subject: </span><span>{{subject}}</span></div>
+	<!--div class="info-item"><span class="item-name">Performer: </span><span>{{reports.performer.reference}}</span></div-->
+	<div class="info-item"><span class="item-name">Encounter: </span><span>{{reports.encounter}}</span></div>
+	<div class="info-item"><span class="item-name">Effective: </span><span>{{reports.effectiveDateTime}}</span></div>
+	<div class="info-item"><span class="item-name">Issued: </span><span>{{reports.issued}}</span></div>
+	<div class="info-item" ng-repeat="specimen in reports.specimen"><span class="item-name">Specimen: </span><span>{{specimen.display}}</span></div>
+	<div class="info-item">
+		<div class="item-title">Result</div>
+		<div class="sub-item" ng-repeat="observation in observation_list">
+			<span class="item-name">Observation</span>
+			<div>{{observation.sequence}}</div>
+			<div ng-click="show_obs_detail()">{{observation.display}}</div>
+		</div>
+	</div>
+	<div class="info-item" ng-if="add_obs != 0">
+		<div class="item-title">Extension-FamilyMemberHistory:</div>
+		<div class="sub-item" ng-repeat="family in families">
+			<div >{{family}}</div>
+		</div>	
+	</div>
+	<div class="info-item">
+		<div class="item-title">Image</div>
+		<div class="sub-item"><span class="item-name">Comment: </span><div></div></div>
+		<div class="sub-item"><span class="item-name">Link: </span><span></span></div>
+	</div>
+	<div class="info-item"><span class="item-name">Conclusion: </span><div></div></div>
+	<div class="info-item"><span class="item-name">PresentedForm: </span><a href="">Form Link</a></div>
+	<div class="btn-area">
+		<button id="back" class="btn btn-info" ng-click="go_index()">Back</button>
+		<button id="edit" class="btn btn-primary pull-right">Edit</button>
+	</div>
+</div><!-- div.detail-info#order -->
+<div class="modal fade" id="observation">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        		<h4 class="modal-title">Modal title</h4>
+			</div>
+		</div>
+	</div>
+</div><!-- div#observation.modal -->

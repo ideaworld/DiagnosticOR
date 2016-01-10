@@ -1,0 +1,313 @@
+<div ng-controller="NewOrdCtrl" class="edit-panel">
+  <div class="new_Title">
+    <h2 id = "new_order_label" class="new_order_label" style="text-align:center;">
+      New Order
+    </h2>
+  </div>
+  <form>
+    <hr/>
+    <div class="new_diaorder">
+      <!--Id-->
+      <div class='input-item row'>
+        <label id="Id" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Id:</label>
+        <input type="text" class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="id"/>
+      </div>
+      <!-- Subject -->
+      <div class="input-item row">
+        <div>
+          <label class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Subject:</label>
+          <div class="input-sm col-xs-3 col-sm-3 col-md-3 col-lg-3">
+          <select name="Subject" id="subject_sel" class="input-sm form-control">
+            <option value="Patient">Patient</option>
+            <option value="Group">Group</option>
+            <option value="Location">Location</option>
+            <option value="Device">Device</option>
+          </select>
+          </div>
+          <button class="btn-info col-sm-2 col-xs-2 col-mg-2 col-lg-2 col-lg-offset-1" type="text" data-toggle="modal" data-target="#subject_modal">
+          Reference
+          </button>
+
+          <div class="modal fade" id="subject_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                   <button type="button" class="close" 
+                      data-dismiss="modal" aria-hidden="true">
+                         &times;
+                   </button>
+                   <h4 class="modal-title" id="myModalLabel">
+                      Patient
+                   </h4>
+                </div>
+                <div class="modal-body" id="subject_content">
+                  <span id="sub_c"></span>
+                  <ul id="sub_id" class="list-group">
+                  </ul>
+                </div>
+                <div class="modal-footer">
+                   <button type="button" class="btn btn-default" 
+                      data-dismiss="modal">Close
+                   </button>
+                   <button type="button" class="btn btn-primary">
+                      Confirm
+                   </button>
+                </div>
+              </div><!-- /.modal-content -->
+            </div>
+          </div>
+        </div>
+        <div>
+          <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></span>
+          <p name="subject" id="subject_chosen" class="col-sm-6 col-xs-6 col-mg-6 col-lg-6">
+          </p>
+        </div>
+      </div>
+      <!-- Orderer -->
+      <div class="input-item row">          
+        <label class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Orderer</label>
+        <p id="orderer_chosen" class="col-sm-4 col-xs-4 col-mg-4 col-lg-4"></p>
+        <button class="btn-info col-sm-2 col-xs-2 col-mg-2 col-lg-2" type="text" data-toggle="modal" data-target="#orderer_modal">
+          Reference
+        </button>
+
+        <div class="modal fade" id="orderer_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                 <button type="button" class="close" 
+                    data-dismiss="modal" aria-hidden="true">
+                       &times;
+                 </button>
+                 <h4 class="modal-title" id="myModalLabel">
+                    Orderer
+                 </h4>
+              </div>
+              <div class="modal-body" id="subject_content">
+                <span id="ord_c"></span>
+                <ul id="ord_id" class="list-group">
+                </ul>
+              </div>
+              <div class="modal-footer">
+                 <button type="button" class="btn btn-default" 
+                    data-dismiss="modal">Close
+                 </button>
+                 <button type="button" class="btn btn-primary">
+                    Confirm
+                 </button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div>
+        </div>
+        <div>
+          <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></span>
+          <p id="orderer_chosen" class="col-sm-6 col-xs-6 col-mg-6 col-lg-6"></p>
+        </div>
+      </div>
+      <!--target-->
+      <div class="input-item row">
+        <label id="Target" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Target:</label>
+        <div class="input-sm col-xs-3 col-sm-3 col-md-3 col-lg-3">
+          <select name="target" id="target_sel" class="input-sm form-control">
+          <option value="Organization">Organization</option>
+          <option value="Device">Device</option>
+          <option value="Practitioner">Practitioner</option>
+          </select>
+        </div>
+        <button class="btn-info col-sm-2 col-xs-2 col-mg-2 col-lg-2 col-lg-offset-1" type="text" data-toggle="modal" data-target="#target_modal">
+        Reference
+        </button>
+
+        <div class="modal fade" id="target_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+               <button type="button" class="close" 
+                      data-dismiss="modal" aria-hidden="true">
+                         &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Target</h4>
+              </div>
+              <div class="modal-body" id="target_content">
+                <span id="target_c"></span>
+                <ul id="target_id" class="list-group"></ul>
+              </div>
+            </div><!-- /.modal-content -->
+          </div>
+        </div>
+        <div>
+          <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></span>
+          <p name="target" id="target_chosen" class="col-sm-6 col-xs-6 col-mg-6 col-lg-6"></p>
+        </div>
+      </div>
+      <!-- Encounter -->
+      <div class="input-item row">    
+        <label class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Encounter</label>
+        <p id="type_chosen" class="col-sm-4 col-xs-4 col-mg-4 col-lg-4">  </p>
+        <button class="btn-info col-sm-2 col-xs-2 col-mg-2 col-lg-2" type="text" data-toggle="modal" data-target="#type_modal">
+          Reference
+        </button>      
+        <div class="modal fade" id="type_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                 <button type="button" class="close" 
+                    data-dismiss="modal" aria-hidden="true">
+                       &times;
+                 </button>
+                 <h4 class="modal-title" id="myModalLabel">
+                    Encounter
+                 </h4>
+              </div>
+              <div class="modal-body" id="subject_content">
+                <span id="type_c"></span>
+                <ul id="type_id" class="list-group">
+                </ul>
+              </div>
+              <div class="modal-footer">
+                 <button type="button" class="btn btn-default" 
+                    data-dismiss="modal">Close
+                 </button>
+                 <button type="button" class="btn btn-primary">
+                    Confirm
+                 </button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div>
+        </div>
+      </div> 
+      <!-- Reason -->
+      <div class="input-item row">      
+        <label class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Reason</label>
+        {% include 'CodeableConcept.html' %}
+      </div>      
+      <!-- Support sptInfo -->
+      <div class="input-item row">
+        <label class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Supporting Information</label>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <select id="sptInfo_sel" class="form-control input-sm">
+            <option value="Observation">Observation</option>
+            <option value="Condition">Condition</option>
+            <option value="DocumentReference">DocumentReference</option>
+          </select>
+          </div>
+          <button class="btn-info col-sm-2 col-xs-2 col-mg-2 col-lg-2 col-lg-offset-1" type="text" data-toggle="modal" data-target="#sptInfo_modal">
+          Reference
+          </button>
+
+          <div class="modal fade" id="sptInfo_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                   <button type="button" class="close" 
+                      data-dismiss="modal" aria-hidden="true">
+                         &times;
+                   </button>
+                   <h4 class="modal-title" id="myModalLabel">
+                      Supporting Information
+                   </h4>
+                </div>
+                <div class="modal-body" id="sptInfo_content">
+                  <span id="sptInfo_c"></span>
+                  <ul id="sptInfo_id" class="list-group">
+                  </ul>
+                </div>
+                <div class="modal-footer">
+                   <button type="button" class="btn btn-default" 
+                      data-dismiss="modal">Close
+                   </button>
+                   <button type="button" class="btn btn-primary">
+                      Confirm
+                   </button>
+                </div>
+              </div><!-- /.modal-content -->
+            </div>
+          </div>
+        <div>
+          <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></span>
+          <p id="sptInfo_chosen" class="col-sm-6 col-xs-6 col-mg-6 col-lg-6">
+          </p>
+        </div>
+      </div>
+
+      <!-- Specimen spec -->
+      <div class="input-item row">
+        <label class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Specimen</label>
+        <p id="spec_chosen" class="col-sm-4 col-xs-4 col-mg-4 col-lg-4"></p>
+        <button class="btn-info col-sm-2 col-xs-2 col-mg-2 col-lg-2" type="text" data-toggle="modal" data-target="#spec_modal">
+          Reference
+        </button>
+
+        <div class="modal fade" id="spec_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                 <button type="button" class="close" 
+                    data-dismiss="modal" aria-hidden="true">
+                       &times;
+                 </button>
+                 <h4 class="modal-title" id="myModalLabel">
+                    Specimen
+                 </h4>
+              </div>
+              <div class="modal-body" id="subject_content">
+                <span id="spec_c"></span>
+                <ul id="spec_id" class="list-group">
+                </ul>
+              </div>
+              <div class="modal-footer">
+                 <button type="button" class="btn btn-default" 
+                    data-dismiss="modal">Close
+                 </button>
+                 <button type="button" class="btn btn-primary">
+                    Confirm
+                 </button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Priority prio -->
+      <div class="input-item row">
+        <label class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Priority</label>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <select id="prio_sel" class="form-control input-sm">
+            <option value="null">--</option>
+            <option value="routine">routine</option>
+            <option value="urgent">urgent</option>
+            <option value="stat">stat</option>
+            <option value="asap">asap</option>
+        </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="new_digorder_item" id = "new_digorder_item">  
+      <div class="row" id = "new_digorder_item_0">
+      {% include 'item_temp.html' %}
+      </div>
+    </div>
+
+    <div class="add_item row">
+      <button class="btn col-xs-2 col-sm-2 col-md-2 col-lg-2 " onclick="del_item()" id="del_item_id">Del Item</button>
+      <button class="btn btn-primary col-xs-2 col-sm-2 col-md-2 col-lg-2" onclick="add_item()">Add Item</button>
+    </div>
+
+    <div class="order_other row"> 
+      <hr/>
+      <h3 class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Note</h3>
+      <div class="row">
+        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></span>
+        <div class="input-item col-sm-6 col-xs-6 col-mg-6 col-lg-6">
+          <textarea  class="form-control" rows="4"> </textarea>
+        </div>
+      </div>
+      <hr/>
+      <div class="input-item row">
+        <button class="btn btn-success" id="btr_sub" onClick="submit()">Submit</button>
+      </div>
+    </div>
+  </form>  
+</div>

@@ -1,0 +1,60 @@
+<!-- author: Bowen -->
+<div class="detail-info" id="order-info">
+	<span class="label order-{{order.status}} label-right">{{order.status}}</span>
+	<div class="info-item"><span class="item-name">Subject: </span><span>{{subject}}</span></div>
+	<div class="info-item"><span class="item-name">Order: </span><span>{{order.orderer.reference}}</span></div>
+
+	<div class="info-item"><span class="item-name">Encounter: </span><span>{{order.encounter.reference}}</span></div>
+
+	<div class="info-item"><div ng-repeat="re in order.reason"><span class="item-name" ng-repeat="re in order.reason">Reason: </span>{{r}}</div></div>
+
+	<!--div class="info-item"><div ng-repeat="sptinfo in order.supportingInformation"><span class="item-name">Supporting Information: </span>{{sptinfo.reference}}</div></div-->
+	
+	<!--div class="info-item"><span class="item-name">Priority: </span><span>{{order.priority}}</span></div-->
+
+	<div class="info-item" ng-repeat="event in order.event">
+		<div class="item-title">Event</div>
+		<span class="label order-{{event.status}} label-right">{{event.status}}</span>
+		<div class="sub-item"><span class="item-name">Description: </span><div>{{event.description}}</div></div>
+		<div class="sub-item"><span class="item-name">DateTime: </span><div>{{event.dateTime}}</div></div>
+		<div class="sub-item"><span class="item-name">Actor: </span><span>{{event.actor.reference}}</span></div>
+	</div>
+
+	<div class="info-item" ng-repeat="item in extension_list">
+		<div class="item-title">Item</div>
+
+		<!--div class="sub-item" ng-repeat="s in item.extension">
+			<div ng-if="s.url=='status'">
+				<span class="label order-{{s.valueCode}} label-right">{{item.valueCode}}</span>
+			</div>
+		</div-->
+
+		<div class="sub-item">
+			<div>
+				<div><span class="item-name">Code: </span></div>
+				<div>
+				<span>
+						{{item.code}}
+				</span>
+				</div>
+			</div>
+		</div>
+
+		<!--div class="sub-item" ng-repeat="s in item.extension">
+			<div ng-if="s.url=='specimen'">
+				<span class="item-name">Specimen: </span>
+				<span >{{s.valueReference.reference}}</span>
+			</div>
+		</div-->
+
+		<div class="sub-item">
+			<div>
+				<div><span class="item-name">Observation For Sequence: </span></div>
+				<span >{{item.sequence}}</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="info-item" ng-repeat="note in order.note"><span class="item-name">Note: </span><div>{{note.text}}</div></div>
+	<a ng-href="#/edit_report/{{id}}/0/0" class="btn btn-primary pull-right">Report</a>
+</div><!-- div.detail-info#order -->

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Diagnostic Order (Launching...)</title>
+    <script type="text/javascript" src="/static/js/jquery-2.1.1.min.js"></script>
+</head>
+<body>
+    Loading...233
+
+    {% if genomic == 1 %}
+        Genomic
+        <script type="text/javascript">
+            var redirect_args = 'scope=user%2FSequence.read+user%2FObservation.read+user%2FObservation.writeuser%2FCondition.read+user%2FPatient.read+user%2FProcedure.read+patient%2FObservation.read&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Frecv_redirect%2F&response_type=code&client_id=3c05835b-6d76-4019-abcb-2a801528ab8a6';
+
+            window.location.href = 'http://genomics-advisor.smartplatforms.org:8005/auth/authorize?' + redirect_args;
+        </script>
+    {% endif %}
+
+    {% if genomic == 0 %}
+        <script>
+            var clientId = "e29fb523-1489-47bb-b163-39b5cae866e8";
+            var serviceUri = getUrlParameter("iss");
+            var launchContextId = getUrlParameter("launch");
+        
+
+            var scope = "launch launch/patient launch/encounter patient/*.read user/*.* openid profile";
+            var state = Math.round(Math.random()*100000000).toString();
+            var launchUri = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            var redirectUri = launchUri.replace("launch.html","index.html");
+            var conformanceUri = serviceUri + "/metadata"
+            $.get(conformanceUri, function(r){
+                var authUri,tokenUri;
+                var smartExtension = r.rest[0].security.extension.filter(function (e) {
+                    return (e.url === "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris");
+                });
+                smartExtension[0].extension.forEach(function(arg, index, array){
+                    if (arg.url === "authorize") {
+                        authUri = arg.valueUri;
+                    } else if (arg.url === "token") {
+                        tokenUri = arg.valueUri;
+                    }
+                });
+
+                window.location.href = authUri + "?" +
+                    "response_type=code&" +
+                    "client_id=" + encodeURIComponent(clientId) + "&" +
+                    "scope=" + encodeURIComponent(scope) + "&" +
+                    "redirect_uri=" + encodeURIComponent(redirectUri) + "&" +
+                    "aud=" + encodeURIComponent(serviceUri) + "&" +
+                    "launch=" + launchContextId + "&" +
+                    "state=" + state;
+             }, "json");
+
+            function getUrlParameter(sParam)
+            {
+                var sPageURL = window.location.search.substring(1);
+                var sURLVariables = sPageURL.split('&');
+                for (var i = 0; i < sURLVariables.length; i++) 
+                {
+                    var sParameterName = sURLVariables[i].split('=');
+                    if (sParameterName[0] == sParam) 
+                    {
+                        return decodeURIComponent(sParameterName[1]);
+                    }
+                }
+            }
+        </script>
+        {% endif %}
+    </body>
+
+</html>

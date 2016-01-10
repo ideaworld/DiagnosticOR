@@ -1,0 +1,24 @@
+<div id="left-panel" ng-controller="left_panel">
+  <div class="item-list" id="order">
+    <div class="title">
+      <h3 ng-click="toggle_order()">Order</h3>
+    </div>
+    <div class="lists" ng-hide="order_flag">
+      <ul>
+        <li><a href="{% url 'check_order'  'ao' %}">All Orders</a></li>
+        <li><a href="{% url 'check_order'  'na' %}">Not Accpeted</a></li>
+        <li><a href="{% url 'check_order'  'ac' %}">Accepted</a></li>
+        <li><a href="{% url 'check_order'  'rj' %}">Rejected</a></li>
+      </ul>
+    </div>
+  </div><!-- div#order -->
+  <div >
+    <a href="{% url 'new_order' %}">
+        <input class="btn" type="button" value="New Order">
+        </input>
+    </a>
+    <a href="{% url 'test' %}">
+        <input class="btn" type="button" value="Test">
+    </a>
+  </div>
+</div><!-- div#left-panel -->
