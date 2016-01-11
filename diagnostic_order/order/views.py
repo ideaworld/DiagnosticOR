@@ -17,7 +17,8 @@ from config import GENOMICSCOPE, GENOMIC_ID, testJ, INDENTIFIER,REPORT,testJson,
 def read_api(request, id, url='orderforgenetics'):
     access_token = request.COOKIES['genomic_access_token']
     resp = requests.get('%s/%s/%s?_format=json'%(API_BASE, url, id),
-              headers={'Accept': 'application/json','Authorization': 'Bearer %s'% access_token})
+              headers={'Accept': 'application/json',
+              'Authorization': 'Bearer %s'% access_token})
     return resp.json()
 
 
@@ -29,34 +30,32 @@ def upload_seq(request, seq, url='orderforgenetics'):
     return resp.json()
 
 def call_api(url, args={}):
-    access_token = args['session']
-    del args['session']
-    args['_format'] = 'json'
-    resp = requests.get(
-                        '%s%s?%s'% (API_BASE, url, urlencode(args)),
-                        headers={'Accept': 'application/json','Authorization': 'Bearer %s'% access_token})
-    
+  access_token = args['session']
+  del args['session']
+  args['_format'] = 'json'
+  resp = requests.get('%s%s?%s'% (API_BASE, url, urlencode(args)),
+                        headers={'Accept': 'application/json',
+                        'Authorization': 'Bearer %s'% access_token})
+  print resp
+  return resp.json()
+def delete(request, type, id):
+  access_token = request.COOKIES['genomic_access_token']
+  resp = requests.delete('%s/%s/%s?_format=json'%(API_BASE,type, id),
+                          headers={'Accept': 'application/json',
+                        'Authorization': 'Bearer %s'% access_token})
+  return resp.json()
 
-    return resp.json()
-
-def index(request):
-  return HttpResponse("hello order")
-
-
-def get_name(str):
-  return str[:str.index('/')]
-
-def get_ID(str):
-  return str[str.index('/')+1:]
 
 def home(request):
-  s = request.session
-  return render(request, 'base.html', {'session':s})
+  return render(request, 'base.html')
 
+'''
+get value of key
+'''
 def get_ref(key, data):
   if (key in data):
     order = data[key]['reference']
-    order = ''.join(map(lambda x: "%c" % ord(x), list(order)))
+    #order = ''.join(map(lambda x: "%c" % ord(x), list(order)))
     return order
   order = ''
   return order
@@ -75,31 +74,27 @@ def check_order(request, status):
   rj_status = ['rejected','failed']
 
   dat = search(request, 'orderforgenetics')
-
   data=[]
-  total = dat['totalResults']
+  total = dat['total']
   if total == 0:
     return render(request, 'orders_item.html', {'status': status_dict[status], 'total':total, 'orders':data});
 
   for d in dat['entry']:
-    if ('event' not in d['content']):
+    if ('event' not in d['resource']):
       continue
-    id_ = d['id']
-    id_ = ''.join(map(lambda x: "%c" % ord(x), list(id_)))
-    id_ = id_[id_.find('orderforgenetics')+len('orderforgenetics')+1:]
-    order = get_ref('encounter', d['content'])
+    id_ = d['resource']['id']
+    #id_ = ''.join(map(lambda x: "%c" % ord(x), list(id_)))
+    order = get_ref('encounter', d['resource'])
 
-    time = d['content']['event'][0]['dateTime']
+    time = d['resource']['event'][0]['dateTime']
     time = ''.join(map(lambda x: "%c" % ord(x), list(time)))
-    time = ""
-    statu = d['content']['status']
+    statu = d['resource']['status']
     statu = ''.join(map(lambda x: "%c" % ord(x), list(statu)))
-    name = d['content']['orderer']['reference']
+    name = d['resource']['orderer']['reference']
     name = ''.join(map(lambda x: "%c" % ord(x), list(name)))
-    #div = d['resource']['text']['div']
-    #div = ''.join(map(lambda x: "%c" % ord(x), list(div)))
-    con = {'name': name, 'Order': order, 'Time': time, 'Status': statu, 'id':id_}
-    data.append(con)
+
+    order_profile = {'name': name, 'Order': order, 'Time': time, 'Status': statu, 'id':id_}
+    data.append(order_profile)
 
   real_data = []
   if status == 'ao':
@@ -124,29 +119,43 @@ def check_order(request, status):
 def new_order(request):
   return render(request, 'new_order.html')
 
-def order_detail(request, id):
+def get_key_value(key, data):
+  if (key in data.keys()):
+    return data[key]
+  return ''
 
+def get_name(str):
+  return str[:str.index('/')]
+
+def get_ID(str):
+  return str[str.index('/')+1:]
+
+def order_detail(request, id):
+  
   order = read_api(request, id, 'orderforgenetics')
-  print '+'*40
-  specimen = ''
-  if ('specimen' in order.keys()):
-    specimen = order['specimen']
-  priority = ''
-  if ('priority' in order.keys()):
-    priority = order['priority']
+  print order
+  subject = read_api(request, get_ID(order['subject']['reference']), get_name(order['subject']['reference']))
+  subject = subject['name'][0]['text']
+
+  
+
+  specimen = get_key_value('specimen', order)
+
+  priority = get_key_value('priority', order)
+
   reason = ''
   if (('reason' in order.keys())  and ('text' in order['reason'][0].keys())):
     reason = order['reason'][0]['text']
+
   sptinfo = ''
   if ('supportingInformation' in order.keys()):
     sptinfo = order['supportingInformation'][0]['reference']
+
   note = ''
   if ('note' in order.keys()):
     note = order['note'][0]['text']
 
-  print order
-  subject = read_api(request, get_ID(order['subject']['reference']), get_name(order['subject']['reference']))
-  subject = subject['name'][0]['text']
+  
 
 
   for item in order['extension']:
@@ -154,9 +163,7 @@ def order_detail(request, id):
       if s['url'] == 'obsForSequence' and s['valueReference']['reference'] != '':
         name = get_name(s['valueReference']['reference'])
         id = get_ID(s['valueReference']['reference'])
-        print id
         data = read_api(request, id, 'observationforgenetics')
-        print data
         for e in data['extension']:
           if e['url'] == r'http://hl7.org/fhir/StructureDefinition/observation-geneticsSequence':
             url = e['valueReference']['reference']
@@ -183,9 +190,6 @@ def order_detail(request, id):
     'specimen': specimen,
     'priority': priority,
     'event_list':order['event'],
-    'event_status':order['event'][0]['status'],
-    'event_actor':order['event'][0]['actor']['reference'],
-    'event_datetime':order['event'][0]['dateTime'],
     'item_list': order['extension'],
     'note':note,
   }
@@ -213,7 +217,7 @@ def launch(request):
 
     #s = 'scope=user%2FSequence.read+user%2FObservation.read+user%2FObservation.writeuser%2FCondition.read+user%2FPatient.read+user%2FProcedure.read+patient%2FObservation.read&'
     #redirect_args = 'scope=user%2FSequence.read+user%2FObservation.read+user%2FObservation.writeuser%2FCondition.read+user%2FPatient.read+user%2FProcedure.read+patient%2FObservation.read&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Frecv_redirect%2F&response_type=code&client_id=3c05835b-6d76-4019-abcb-2a801528ab8a6'
-  re = 'http://localhost:2048/auth/authorize?'+ urlencode(args)
+  re = 'http://genomics-advisor.smartplatforms.org:2048/auth/authorize?'+ urlencode(args)
 
   resp = HttpResponseRedirect(re)
 
@@ -276,7 +280,7 @@ def recv_redirect(request):
     "Content-Length" : len(datas)
   }
   print 'begin'
-  resp = requests.post('http://localhost:2048/auth/token', data=datas,headers=headers)
+  resp = requests.post('http://genomics-advisor.smartplatforms.org:2048/auth/token', data=datas,headers=headers)
   print resp
   print 'end'
   if resp.status_code != 200:
@@ -298,61 +302,66 @@ def get_id(_id, res):
   return _id[start:]
 
 def search(request, url, args={}):
-  url = '/'+ url
+  print 'def search'
+  url = '/'+ url 
   args['session'] = request.COOKIES['genomic_access_token']
   order_search = call_api(url, args);
   return order_search
-
-def search_subject(request):
-  subject = request.GET.get('subject')
-  order_search = search(request, subject);
-  datas=[]
-  entry={}
-  if order_search['totalResults'] != 0:
-    for e in order_search['entry']:
-      div = e['content']['name'][0]['text']
-      _id = get_id(e['id'], subject)
-      entry={
-        'div': div,
-        'id': _id
-      }
-      datas.append(entry)
-
-  datas={
-    'total': order_search['totalResults'],
-    'entry': datas 
-  }
-
-  return JsonResponse(datas, safe=False)
-
-def search_orderer(request):
-  order_orderer = order_search = search(request, 'Practitioner')
-  return JsonResponse(order_search['entry'], safe=False)
 
 def noIssue(data):
   if 'issue' not in data:
     return True
   else:
     return False
+
+def get_datas_list(request, subject):
+
+  order_search = search(request, subject);
+  datas=[]
+  entry={}
+  if order_search['total'] != 0:
+    for e in order_search['entry']:
+      div = e['resource']['name'][0]['text']
+      id = e['resource']['id']
+      entry={
+        'div': div,
+        'id': subject + '/' +id
+      }
+      datas.append(entry)
+
+  datas={
+    'total': order_search['total'],
+    'entry': datas 
+  }
+  return datas
+
+def search_subject(request):
+  subject = request.GET.get('subject')
+  print subject
+  datas = get_datas_list(request, subject)
+  return JsonResponse(datas, safe=False)
+
 def search_type(request):
 
   subject = request.GET.get('subject')
-  order_search = search(request, 'Encounter')
+  datas = get_datas_list(subject)
+
+  order_search = search(request, subject)
   if noIssue(order_search):
     datas=[]
     entry={}
-    if order_search['totalResults'] != 0:
+    if order_search['total'] != 0:
       for e in order_search['entry']:
-        div = e['content']['text']['div']
-        _id = get_id(e['id'], subject)
+        div = e['resource']['text']['div']
+        id = e['resource']['id']
         entry={
           'div': div,
-          'id': _id
+          'id': subject + '/' +id
         }
         datas.append(entry)
   
     datas={
-      'total': order_search['totalResults'],
+      'total': order_search['total'],
       'entry': datas 
     }
     return JsonResponse(datas, safe=False)
@@ -367,35 +376,14 @@ def search_sptInfo(request):
   order_search = search(request, subject)
   return JsonResponse(order_search, safe=False)
 
-def search_Observation(request):
-
-  datas={
-    'total':3,
-    'entry':[
-      {
-        'div':'<div>Q2342X (7252C>T) BRCA2</div>',
-        'id':'123'
-      },
-      {
-        'div':'<div>R315G (1062A>G) BRCA1</div>',
-        'id': '456'
-      },
-      {
-        'div':'<div>IVS15+3A>G BRCA1</div>',
-        'id': '789'
-      },
-    ]
-  }
-  #return JsonResponse(datas, safe=False)
-  
+def search_Observation(request):  
   subject = request.GET.get('subject')
   subject = 'observationforgenetics'
   order_search = search(request, subject)
 
-  print 'order_search'
   datas = []
   for entry in order_search['entry']:
-    for extension in entry['content']['extension']:
+    for extension in entry['resource']['extension']:
       if extension['url'] == r'http://hl7.org/fhir/StructureDefinition/observation-geneticsSequence':
         url = extension['valueReference']['reference']
         access_token = request.COOKIES['genomic_access_token']
@@ -403,12 +391,10 @@ def search_Observation(request):
               headers={'Accept': 'application/json','Authorization': 'Bearer %s'% access_token})
         data = resp.json()
         div = data['text']['div']
-        _id = entry['id']
-        start, end = re.search('observationforgenetics/', _id).span()
-        _id = _id[start:]
+        _id = entry['resource']['id']
         entry = {
           'div': div,
-          'id': _id
+          'id': subject + '/' +_id
         }
         datas.append(entry);
 
@@ -448,18 +434,18 @@ def search_target(request):
   order_search = search(request, subject)
   datas=[]
   entry={}
-  if order_search['totalResults'] != 0:
+  if order_search['total'] != 0:
     for e in order_search['entry']:
-      div = e['content']['text']['div']
-      _id = get_id(e['id'], subject)
+      div = e['resource']['text']['div']
+      _id = e['resource']['id']
       entry={
         'div': div,
-        'id': _id
+        'id': subject + '/' +_id
       }
       datas.append(entry)
 
   datas={
-    'total': order_search['totalResults'],
+    'total': order_search['total'],
     'entry': datas 
   }
 
@@ -536,7 +522,9 @@ def updata(request):
             data=json.dumps(dorder), 
             headers={'Authorization': 'Bearer %s'% access_token})
   print 'Diagnostic Order is ok'
+  print resp.json()
   print resp
+  
   #f = open('log.txt', 'w')
   #f.write(resp.content)
   #f.close()
@@ -572,7 +560,9 @@ def test(request):
   args={}
   args['session'] = request.COOKIES['genomic_access_token']
   #order_search = upload_seq(request, testJson)
-  order_search = call_api('/orderforgenetics', args);
+  order_search = delete(request, 'orderforgenetics', '6dfbd645-0a33-48fe-a187-ddcc029e1997')
+  #order_search = call_api('/orderforgenetics', args)
+  
   return render(request, 'test.html', {'data':order_search})
   #upload_seq(request, testJson)
   #return render(request, 'test.html', {'data':'order_search'})

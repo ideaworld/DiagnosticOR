@@ -28,22 +28,22 @@ SECRET_KEY = 'hello, world!'
 GOOGLE_API_KEY = 'AIzaSyB01GeX_HiuZbHCkZ-P5hJ7yUHVkwFS07Q'
 
 CLIENT_ID ='e29fb523-1489-47bb-b163-39b5cae866e8'
-GENOMIC_ID = '1e0e58cb-042e-4516-8f8a-6af3793face9'
+GENOMIC_ID = 'f4a0eb65-caf3-42c9-bf07-e2106b85ba0f'
 GENOMICSCOPE = [
 'user/Sequence.read', 
 'user/Patient.read',
 'user/Sequence.write', 
 'user/Observation.read',
 'user/Specimen.read',
-'user/DiagnosticOrder.read',
-'user/DiagnosticOrder.write',
 'user/Practitioner.read',
 'user/Order.read',
 'user/Order.write',
 'user/orderforgenetics.read',
 'user/orderforgenetics.write',
 'user/observationforgenetics.read',
-'user/observationforgenetics.write'
+'user/observationforgenetics.write',
+'user/Encounter.read',
+'user/Organization.read'
 ]
 SCOPES = [
 'launch',
@@ -57,8 +57,8 @@ redirect_uri = 'http://localhost:8000/'
 REDIRECT_URI = 'http://localhost:8000/recv_redirect/'
 AUTH_BASE = 'https://authorize-dstu2.smarthealthit.org'
 #API_BASE = 'https://fhir-api-dstu2.smarthealthit.org'
-#API_BASE = 'http://genomics-advisor.smartplatforms.org:2048/api'
-API_BASE = 'http://localhost:2048/api'
+API_BASE = 'http://genomics-advisor.smartplatforms.org:2048/api'
+#API_BASE = 'http://localhost:2048/api'
 
 ID_SRCRET_BASE64 = 'ZTI5ZmI1MjMtMTQ4OS00N2JiLWIxNjMtMzliNWNhZTg2NmU4OkFMZHFlclpDRzNPalNibUE0SUFFRXNDNWpvdDliUnFqbmJrZ04tek1oUDhtWFNTakpqUExsQ3pwa2dfN09BVXg2UVNqU2ZSZXpzTE8xbmpIcEs5ZlJkZw=='
 

@@ -13,7 +13,7 @@ $(function () { $('#subject_modal').on('shown.bs.modal', function () {
     for (var i = ret.length - 1; i >= 0; i--) {
       subul.innerHTML = subul.innerHTML +  "<li class=\"list-group-item sub_item\" id=\"sub_li_" + i +"\"><label>"
       + text + ":"+ ret[i]['div'] + "</label>"
-      + "<span id='subject_entry_id' hidden>" + ret[i]['id'] +"</span>"
+      + "<span id='subject_entry_id' hidden>" +ret[i]['id'] +"</span>"
       +"</li>";      
     };
     for (var i = ret.length - 1; i >= 0; i--) {
@@ -118,38 +118,6 @@ $(function () { $('#type_modal').on('shown.bs.modal', function () {
       }
     })
   }//<!-- end of if -->
-  })
-});
-
-
-$(function () { $('#orderer_modal').on('shown.bs.modal', function () {
-  var text = 'Practitioner'             
-  var obj = document.getElementById("ord_id");
-  var a = obj.getElementsByTagName("li");
-  if(a.length == 0){
-  $.getJSON("search_orderer/",{'subject':text}, function(ret){   
-        var ord_ul = document.getElementById("ord_id");
-        for (var i = ret.length - 1; i >= 0; i--) {
-          practitioner = ret[i]['resource']['text']['div'];
-          practitioner = practitioner.substring(7, practitioner-8);
-          ord_ul.innerHTML = ord_ul.innerHTML +  "<li class=\"list-group-item ord_item\" id=\"ord_li_" + i +"\"><label>"
-          + practitioner +
-          "</label></li>";
-        };
-        for (var i = ret.length - 1; i >= 0; i--) {
-          var li = document.getElementById("ord_li_"+i);
-          li.onclick = function(){
-            var id = $(this).attr("id");
-            var li = document.getElementById(id);
-            var str = li.innerHTML;
-            str = str.substring(7, str.length-8);
-            var text = document.getElementById('orderer_chosen');
-            text.innerHTML = str;
-            $('#orderer_modal').modal('hide')
-          }
-        }
-    })
-    }
   })
 });
 
