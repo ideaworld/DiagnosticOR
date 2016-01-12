@@ -143,12 +143,11 @@ function set_order_data(data){
 	var mid_scope = mid_element.scope();
 	var datas = [];
 	for(var i = 0; i < orders.length; i++){
-		var id = orders[i].id;	
-		id = id.substring(id.indexOf("orderforgenetics")+"orderforgenetics".length + 1);
-		
-		var orderer = orders[i].content.orderer.reference;
-		var updated = orders[i].updated;
-		var status = orders[i].content.status;
+		var id = orders[i].fullUrl;  
+    id = id.substring(id.indexOf("orderforgenetics")+"orderforgenetics".length + 1);
+		var orderer = orders[i].resource.orderer.reference;
+		var updated = orders[i].resource.updated;
+		var status = orders[i].resource.status;
 		var d = {orderer:orderer, status:status, updated:updated, id:id};
 		datas.push(d);
 	}
@@ -164,11 +163,11 @@ function set_report_data(data){
 	var mid_scope = mid_element.scope();
 	var datas = [];
 	for(var i = 0; i < reports.length; i++){
-		var id = reports[i].id;	
+		var id = reports[i].fullUrl;	
 		id = id.substring(id.indexOf("reportforgenetics")+"reportforgenetics".length + 1);
-		var performer = reports[i].content.performer.reference;
-		var issued = reports[i].content.issued;
-		var status = reports[i].content.status;
+		var performer = reports[i].resource.performer.reference;
+		var issued = reports[i].resource.issued;
+		var status = reports[i].resource.status;
 		var d = {performer:performer, status:status, issued:issued, id:id};
 		datas.push(d);
 	}
@@ -363,7 +362,7 @@ DRController.controller('OrderCtrl', ['$scope','$http', '$route', function($scop
         	$scope.list = ['hello','world'];
       	}
 
-      	var name, id;
+    var name, id;
 		name = get_name(data.subject.reference);
 		id = get_id(data.subject.reference);
 		$http.get('/datas/'+ name  + '?id=' +id).success(function(data){
@@ -461,7 +460,6 @@ DRController.controller('EditReportCtrl', ['$scope', '$http', '$location', '$rou
 	}
 
 	var set_report_form_all = function(data){
-		console.log(data);
 		$scope.category = data.category.coding[0].code;
 		$scope.code = data.code.coding[0].code;
 		$scope.effective = data.effectiveDateTime;
@@ -472,7 +470,6 @@ DRController.controller('EditReportCtrl', ['$scope', '$http', '$location', '$rou
 		$scope.conclusion = data.conclusion;
 	}
 	var set_report_form = function(){
-		console.log($scope.order_data);
 		$scope.subject = $scope.order_data.subject.reference;
 		$scope.performer = "Myriad Lab/123456";
 		$scope.code = $scope.order_data.extension[0].extension[0].valueCodeableConcept.coding[0].code;
@@ -532,7 +529,6 @@ DRController.controller('EditReportCtrl', ['$scope', '$http', '$location', '$rou
 			}
 		});
 		
-		console.log(order_data);
 		var opt = {
 			method: 'POST',
 			data:{
@@ -626,38 +622,38 @@ DRController.controller('EditReportCtrl', ['$scope', '$http', '$location', '$rou
 
 
 	var create_observation = function(info, extension, result){
-	data = {
-		'resourceType': 'observationforgenetics',
-		'extension': extension,
-		"status": "final",
-		"code": {
-    		"coding": [
-      		{
-        		"system": info.code_system,
-        		"code": info.code,
-        		"display": info.code_display
-      		}
-    		]
-  		},
-  		'subject':{
-  			"reference": info.subject
-  		},
-  		"issued": info.issued,
-  		"performer": [
-    		{
-      			"reference": 'Organization/123456',
-      			"display": ""
-    		}
-  		],
-  		"valueCodeableConcept": {
-    		"coding": [
-      		{
-        		"system": "http://snomed.info/sct",
-        		"code": "10828004",
-       			"display": result,
-      		}
-    		]
- 		 },
+	   data = {
+		    'resourceType': 'observationforgenetics',
+		    'extension': extension,
+		    "status": "final",
+		    "code": {
+        		"coding": [
+          		{
+            		"system": info.code_system,
+            		"code": info.code,
+            		"display": info.code_display
+          		}
+        		]
+  	   	},
+  	   	'subject':{
+  	   		"reference": info.subject
+  	   	},
+  	   	"issued": info.issued,
+  	   	"performer": [
+        		{
+          			"reference": 'Organization/123456',
+          			"display": ""
+        		}
+  	   	],
+  	   	"valueCodeableConcept": {
+        		"coding": [
+          		{
+            		"system": "http://snomed.info/sct",
+            		"code": "10828004",
+           			"display": result,
+          		}
+        		]
+ 		    },
 	};
 	var opt = {
 		method:'POST',
@@ -666,12 +662,9 @@ DRController.controller('EditReportCtrl', ['$scope', '$http', '$location', '$rou
 		headers:{'Content-Type':'application/json'}
 	}
 	$http(opt).success(function(data){
-		console.log(data);
-        return data.id;
+      return data.id;
 	}).error(function(data,status,hedaers,config){
-        console.log(data);
-        console.log(status);
-    });
+  });
 	}
 
 	var update_observation = function(id, subject, result){
@@ -717,21 +710,21 @@ DRController.controller('EditReportCtrl', ['$scope', '$http', '$location', '$rou
 			res.push({'reference':id, 'display': s});
 		}
 		}else{
-		total = $('#add_observation').children();
-        var obsList = new Array;
-        var obsIndex = 0;
-		for (var i = 0; i < total.length-2; i++){
-            var entry = $('#add_observation_self_'+i);
-			var gene = entry.find('#gene').val();
-			var variation = entry.find('#variation').val();
-			var amino = entry.find('#amino').val();
-			var result = entry.find('#result').val();
-			url = "http://www.genenames.org/cgi-bin/search?search_type=all&search=" + gene + "&submit=Submit";
-			obsList.push({
+		  total = $('#add_observation').children();
+      var obsList = new Array;
+      var obsIndex = 0;
+		  for (var i = 0; i < total.length-2; i++){
+         var entry = $('#add_observation_self_'+i);
+			   var gene = entry.find('#gene').val();
+			   var variation = entry.find('#variation').val();
+			   var amino = entry.find('#amino').val();
+			   var result = entry.find('#result').val();
+			   url = "http://www.genenames.org/cgi-bin/search?search_type=all&search=" + gene + "&submit=Submit";
+			   obsList.push({
                 'gene':gene, 'variation': variation, 'amino':amino, 'result':result
-            })
+         })
             
-			$http.get('/datas/code?code=' +gene).success(function(result){
+			   $http.get('/datas/code?code=' +gene).success(function(result){
                 var gene = obsList[obsIndex].gene;
                 var str = "<strong>"+gene+"</strong>";
                 var index = result.indexOf(str);

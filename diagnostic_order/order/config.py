@@ -28,7 +28,7 @@ SECRET_KEY = 'hello, world!'
 GOOGLE_API_KEY = 'AIzaSyB01GeX_HiuZbHCkZ-P5hJ7yUHVkwFS07Q'
 
 CLIENT_ID ='e29fb523-1489-47bb-b163-39b5cae866e8'
-GENOMIC_ID = 'f4a0eb65-caf3-42c9-bf07-e2106b85ba0f'
+GENOMIC_ID = 'a252938b-3a71-4e83-b7ec-6fe1b1a3a188'
 GENOMICSCOPE = [
 'user/Sequence.read', 
 'user/Patient.read',

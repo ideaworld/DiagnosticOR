@@ -10,7 +10,7 @@ var request = require('request');
 
 router.get('/', function(req, res, next){
 	var code = req.query.code;
-
+	console.log(code);
 	var post_data = {
 		'code':code,
 		'client_id': configs.client_id,
@@ -37,7 +37,7 @@ router.get('/', function(req, res, next){
 function send_request(datas, req, res){
 	var opt = {
 		method:'POST',
-		url: 'http://localhost:2048/auth/token',
+		url: 'http://genomics-advisor.smartplatforms.org:2048/auth/token',
 		headers: {
 			"Content-Type": 'application/x-www-form-urlencoded',
 			"Content-Length" : datas.length

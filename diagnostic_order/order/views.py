@@ -82,7 +82,8 @@ def check_order(request, status):
   for d in dat['entry']:
     if ('event' not in d['resource']):
       continue
-    id_ = d['resource']['id']
+    id_ = d['fullUrl'][d['fullUrl'].index('orderforgenetics')+len('orderforgenetics')+1:]
+
     #id_ = ''.join(map(lambda x: "%c" % ord(x), list(id_)))
     order = get_ref('encounter', d['resource'])
 
@@ -560,8 +561,8 @@ def test(request):
   args={}
   args['session'] = request.COOKIES['genomic_access_token']
   #order_search = upload_seq(request, testJson)
-  order_search = delete(request, 'orderforgenetics', '6dfbd645-0a33-48fe-a187-ddcc029e1997')
-  #order_search = call_api('/orderforgenetics', args)
+  #order_search = delete(request, 'orderforgenetics', '35948c17-3c0d-4d05-a3b5-e34bae4b71d7')
+  order_search = call_api('/orderforgenetics', args)
   
   return render(request, 'test.html', {'data':order_search})
   #upload_seq(request, testJson)
