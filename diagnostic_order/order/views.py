@@ -8,9 +8,10 @@ from urllib import urlencode
 from urllib import quote
 import requests
 import re 
+import base64
 from django.shortcuts import redirect 
 from django.views.decorators.csrf import csrf_exempt
-from config import GENOMICSCOPE, GENOMIC_ID, testJ, INDENTIFIER,REPORT,testJson, ID_SRCRET_BASE64, redirect_uri, API_BASE, AUTH_BASE, CLIENT_ID, REDIRECT_URI, SCOPES 
+from config import CLINIC_SECRET, CLINIC_REDIRECT_URI, CLINICSCOPES, GENOMICSCOPE, GENOMIC_ID, testJ, INDENTIFIER,REPORT,testJson, ID_SRCRET_BASE64, redirect_uri, API_BASE, AUTH_BASE, CLIENT_ID, REDIRECT_URI
 # Create your views here.
 
 
@@ -36,7 +37,6 @@ def call_api(url, args={}):
   resp = requests.get('%s%s?%s'% (API_BASE, url, urlencode(args)),
                         headers={'Accept': 'application/json',
                         'Authorization': 'Bearer %s'% access_token})
-  print resp
   return resp.json()
 def delete(request, type, id):
   access_token = request.COOKIES['genomic_access_token']
@@ -156,9 +156,6 @@ def order_detail(request, id):
   if ('note' in order.keys()):
     note = order['note'][0]['text']
 
-  
-
-
   for item in order['extension']:
     for s in item['extension']:
       if s['url'] == 'obsForSequence' and s['valueReference']['reference'] != '':
@@ -198,41 +195,24 @@ def order_detail(request, id):
   return render(request, 'order_detail.html', args)
 
 def launch(request):
-  print '-'*5
-  iss = request.GET['iss']
-  launch = request.GET['launch']
-  request.session['iss'] = iss
-  request.session['launch'] = launch
-  #return render(request, 'launch.html', {'genomic': 0})
-  scope = ' '.join(GENOMICSCOPE)
-
-  print '+'*5
-  #if 'genomic_access_token' not in request.COOKIES:
-  #if ('genomic_access_token' not in request.session):
   print "START: GENOMIC"
+  request.session['iss'] = request.GET['iss']
+  request.session['launch'] = request.GET['launch']
+  scope = ' '.join(GENOMICSCOPE)
   args={}
   args['scope'] = scope
   args['client_id'] = GENOMIC_ID
   args['response_type'] = 'code'
   args['redirect_uri'] = REDIRECT_URI
-
-    #s = 'scope=user%2FSequence.read+user%2FObservation.read+user%2FObservation.writeuser%2FCondition.read+user%2FPatient.read+user%2FProcedure.read+patient%2FObservation.read&'
-    #redirect_args = 'scope=user%2FSequence.read+user%2FObservation.read+user%2FObservation.writeuser%2FCondition.read+user%2FPatient.read+user%2FProcedure.read+patient%2FObservation.read&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Frecv_redirect%2F&response_type=code&client_id=3c05835b-6d76-4019-abcb-2a801528ab8a6'
   re = 'http://genomics-advisor.smartplatforms.org:2048/auth/authorize?'+ urlencode(args)
-
   resp = HttpResponseRedirect(re)
-
   return resp
-    #return render(request, 'launch.html', {'genomic': 1})
-  #else:
 
-  #  re = 'http://localhost:8000/fhir-app/'
-   # resp = HttpResponseRedirect(re)
-   # resp.set_cookie('genomic_access_token', request.session.get('genomic_access_token'))
-   # return resp
-
-    #print "START: CLINIC"
-    #return render(request, 'launch.html', {'genomic': 0})
+def clinic_launch(request):
+  scope = ' '.join(CLINICSCOPES)
+  print "START: CLINIC"
+  return render(request, 'clinic_launch.html', 
+    {'clinicId': CLIENT_ID, 'scope': scope, 'redirect_uri': CLINIC_REDIRECT_URI})
   
 class OAuthError(Exception):
     pass
@@ -244,25 +224,28 @@ def get_access_token(auth_code):
 
     exchange_data = {
         'code': auth_code,
-        'redirect_uri': 'http://localhost:8000/index.html',
+        'redirect_uri': CLINIC_REDIRECT_URI,
         'grant_type': 'authorization_code'
     }
     headers = {
         "Content-Type": 'application/x-www-form-urlencoded',
         "Content-Length" : len(exchange_data),
-        'Authorization':'Basic ' + ID_SRCRET_BASE64
+        'Authorization':'Basic ' + base64.b64encode(CLIENT_ID+":" +CLINIC_SECRET)
     }
     resp = requests.post(AUTH_BASE+'/token', data=exchange_data, headers=headers)
+    print resp.json()
     if resp.status_code != 200:
         raise OAuthError
     else:
         return resp.json()['access_token']
 
 def recv_code(request):
-
+  print 'clinic recv redirect'
+  print request.path
   code = request.GET.get('code')
+  print code
   access_token = get_access_token(code)
-  resp = HttpResponseRedirect('fhir-app/')
+  resp = HttpResponseRedirect('/fhir-app/')
   resp.set_cookie('access_token', access_token)
   resp.set_cookie('genomic_access_token', request.session.get('genomic_access_token'))
   return resp
@@ -291,7 +274,11 @@ def recv_redirect(request):
     #resp.set_cookie('genomic_access_token', genomic_access_token)
     request.session['genomic_access_token'] = genomic_access_token
 
-    re = 'http://localhost:8000/fhir-app/'
+    re = 'http://localhost:8000/clinic_launch.html'
+    args={}
+    args['iss'] = request.session.get('iss')
+    args['launch'] = request.session.get('launch')
+    re = re + '?' + urlencode(args)
     resp = HttpResponseRedirect(re)
     resp.set_cookie('genomic_access_token', request.session.get('genomic_access_token'))
     return resp
@@ -562,7 +549,7 @@ def test(request):
   args['session'] = request.COOKIES['genomic_access_token']
   #order_search = upload_seq(request, testJson)
   #order_search = delete(request, 'orderforgenetics', '35948c17-3c0d-4d05-a3b5-e34bae4b71d7')
-  order_search = call_api('/orderforgenetics', args)
+  order_search = call_api('/Patient', args)
   
   return render(request, 'test.html', {'data':order_search})
   #upload_seq(request, testJson)
