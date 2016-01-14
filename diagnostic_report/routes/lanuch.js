@@ -9,23 +9,24 @@ var requestify = require('requestify');
 router.get('/', function(req, res, next) {
 	req.session.iss = req.query.iss;
 	req.session.launch = req.query.launch;
-    console.log('genomics?');
 	if (!req.session || !req.session.access_token) {
 		console.log('genomics');
 		res.redirect('/req_genomics_auth/');
-	}
-    console.log('clinic?');
-    res.redirect('/req_genomics_auth/');
-	//res.render('launch.html', {});
+	}else{
+        console.log('clinical');
+        get_clinical_auth(req, res);
+    }
+    //res.redirect('/req_genomics_auth/');
+    res.render('launch.html', {});
 });
 
 function get_clinical_auth(req, res){
 	var client_id = config.clinical_client_id;
 	var serviceUri = req.query.iss;
 	var launchContextId = req.query.launch;
-	var scope = ['patient/*.read', 'user/*.read', 'user/*.*'].join(' ');
-	var launchUri = 'http://localhost:8000/fhir-app/launch.html';
-	var redirectUri = 'http://localhost:8000/';
+	var scope = ['patient/*.read', 'user/*.*', 'openid', 'launch', 'launch/patient', 'launch/encounter', 'profile'].join(' ');
+	var launchUri = 'http://localhost:8001/fhir-app/launch.html';
+	var redirectUri = 'http://localhost:8001/';
 	res.redirect(config.clinical_auth_uri + '?' +
 		"response_type=code&" +
         "client_id=" + encodeURIComponent(client_id) + "&" +

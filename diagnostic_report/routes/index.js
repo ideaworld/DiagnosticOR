@@ -10,11 +10,13 @@ var mkFhir = require('fhir.js');
 router.get('/', function(req, res, next) {
 	if(!req.session || !req.session.access_token ){
 		res.redirect('/req_genomics_auth/');
+	}else if( !req.session || !req.session.clinical_access_token ){
+		var token = new Buffer(config.clinical_client_id+':'+config.clinical_client_secret).toString('base64');
+		req.session.clinical_basic = token;
+		var code = req.query.code
+		res.redirect('/req_clincial_auth/?code=' + code);
 	}
-	
-	
-	console.log('h');
-  res.render('index.html', {});
+  res.render('index.html', {clinical_token:req.session.clinical_access_token});
 });
 
 function get_clinical_token(req, res){

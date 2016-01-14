@@ -48,7 +48,7 @@ function send_request(datas, req, res){
 		if (!error && response.statusCode < 500){
 			req.session.access_token = JSON.parse(body).access_token;
 			console.log(body);
-			res.redirect('/');
+			res.redirect('/fhir-app/launch.html?iss=' + encodeURIComponent(req.session.iss) + '&launch='+req.session.launch);
 		}else{
 			res.redirect('/req_genomics_auth/');
 		}
