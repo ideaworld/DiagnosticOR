@@ -99,8 +99,8 @@ $(function () { $('#type_modal').on('shown.bs.modal', function () {
       if (sum > 0){
         ret = ret['entry'];
         for (var i = ret.length - 1; i >= 0; i--) {
-          var str = ret[i]['resource']['text']['div'].substring(5);
-          var id = ret[i]['resource']['id'];
+          var str = ret[i]['div'];
+          var id = ret[i]['id'];
           ord_ul.innerHTML = ord_ul.innerHTML +  "<li class=\"list-group-item type_item\" id=\"type_li_" + i +"\"><label>"
           + str + "</label>" + "<span id='encounter_entry_id' hidden>" + id + "</span>"
           +"</li>";     
@@ -503,8 +503,7 @@ function Submit(){
     data:json_str,
     dataType:"json",
     type:"POST",
-    success:function(result){
-      
+    success:function(result){   
       show_msg();
     }
   });

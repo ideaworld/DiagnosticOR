@@ -1,24 +1,44 @@
 # OAuth2 settings for communicating with clinical server
 CLINICAL = {
-    'client_id': '5e3a370c-1fff-41d6-a4ef-d177c19357e7',
-    'redirect_uri': 'http://localhost:8000/',
+    'client_id': 'aeda2b2f-3537-4fba-bb9c-8b54213be6f9',
+    'redirect_uri': 'http://localhost:8000/clinic_recv_redirect/',
     'scopes': [
-               'launch',
-               'launch/patient',
-               'launch/encounter',
-               'patient/*.read',
-               'user/*.*',
-               'openid',
-               'profile'
-               ]
+                'launch',
+                'launch/patient',
+                'launch/encounter',
+                'patient/*.read',
+                'user/*.*',
+                'openid',
+                'profile'
+              ],
+    'API_BASE': 'https://fhir-api-dstu2.smarthealthit.org',
+    'AUTH_BASE': 'https://authorize-dstu2.smarthealthit.org/token',
+    'CLINIC_SECRET': 'bpx0TDjk_LNjs9m8RFjQNN_nNByijn_2LPJCdEpKKd6aRollwoBnDK6G-qMm9EYzBc23QmiIZ6kDbExkbCOPOA'
 }
 # OAuth2 settings for communicating with genomic server
 GENOMICS = {
-    'client_id': 'a230d3be-e35e-43b8-a30e-befe6b2c70ea',
-    'redirect_uri': 'http://genomics-advisor.smartplatforms.org:2048/',
-    'scopes': ['user/Sequence.read', 'user/Patient.read','user/Sequence.write'],
-    'oauth_base': 'http://genomics-advisor.smartplatforms.org:8005/auth',
-    'api_base': 'http://genomics-advisor.smartplatforms.org:8005/api'
+    'client_id': 'ec06dbef-78c9-4045-9b8a-ecc5c04b3499',
+    'redirect_uri': 'http://localhost:8000/recv_redirect/',
+    'scopes': [
+                'user/Sequence.read', 
+                'user/Patient.read',
+                'user/Sequence.write', 
+                'user/Observation.read',
+                'user/Specimen.read',
+                'user/Practitioner.read',
+                'user/Order.read',
+                'user/Order.write',
+                'user/orderforgenetics.read',
+                'user/orderforgenetics.write',
+                'user/observationforgenetics.read',
+                'user/observationforgenetics.write',
+                'user/Encounter.read',
+                'user/Organization.read'
+              ],
+    'OAUTH_BASE': 'http://genomics-advisor.smartplatforms.org:2048/auth',
+    'AUTH_BASE': 'https://authorize-dstu2.smarthealthit.org',
+    'API_BASE': 'http://genomics-advisor.smartplatforms.org:2048/api',
+    'RE_CLINICAL_URI': 'http://localhost:8000/clinic_launch.html'
 
 }
 
