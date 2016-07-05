@@ -20,7 +20,7 @@
 9 verbose stack     at maybeClose (internal/child_process.js:818:16)
 9 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
 10 verbose pkgid diagnostic_report@0.0.0
-11 verbose cwd /Users/Bowen/eHealth/diagnostic/diagnostic_report
+11 verbose cwd /Users/Bowen/DiagnosticOR/diagnostic_report
 12 error Darwin 15.5.0
 13 error argv "/usr/local/Cellar/node/4.2.1/bin/node" "/usr/local/bin/npm" "start"
 14 error node v4.2.1
