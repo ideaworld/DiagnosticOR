@@ -35,6 +35,7 @@ router.get('/', function(req, res, next){
 });
 
 function send_request(datas, req, res){
+	console.log('recving code');
 	var opt = {
 		method:'POST',
 		url: 'http://genomics-advisor.smartplatforms.org:2048/auth/token',
@@ -46,10 +47,16 @@ function send_request(datas, req, res){
 	};
 	request(opt, function(error, response, body){
 		if (!error && response.statusCode < 500){
-			req.session.access_token = JSON.parse(body).access_token;
 			console.log(body);
-			res.redirect('/');
+			req.session.jump_genomics = true;
+			console.log('genomics token');
+			console.log(body);
+			req.session.access_token = JSON.parse(body).access_token;
+			res.redirect('/fhir-app/launch.html?iss=' + encodeURIComponent(req.session.iss) + '&launch='+req.session.launch);
 		}else{
+			console.log(error);
+			console.log('erroring');
+
 			res.redirect('/req_genomics_auth/');
 		}
 	});

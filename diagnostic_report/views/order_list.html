@@ -1,0 +1,40 @@
+<div class="main" layout="column" flex layout-padding>
+  <div class="select-area" flex="7" layout="row" layout-padding  layout-align="start center">
+    <span flex></span>
+    <h4 class="inpage-title" flex="20">Status: </h4>
+    <md-input-container flex="30">
+      <label>Order Status</label>
+      <md-select ng-model="chosen_status">
+        <md-option value="">All</md-option>
+        <md-option value="proposed">Proposed</md-option>
+        <md-option value="draft">Draft</md-option>
+        <md-option value="planned">Planned</md-option>
+        <md-option value="requested">Requested</md-option>
+        <md-option value="received">Received</md-option>
+        <md-option value="accepted">Accepted</md-option>
+        <md-option value="in-progress">In-progress</md-option>
+        <md-option value="review">Review</md-option>
+        <md-option value="completed">Completed</md-option>
+        <md-option value="cancelled">Cancelled</md-option>
+        <md-option value="suspended">Suspended</md-option>
+        <md-option value="rejected">Rejected</md-option>
+        <md-option value="failed">Failed</md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+  <md-divider></md-divider>
+  <div layout="row" class="orders-area" flex="90">
+    <md-list class="or-list" flex>
+      <md-list-item ng-repeat="order in orders | filter:chosen_status:order.status.indexOf(chosen_status) > -1" class="or-item" layout="row" layout-align="center center" ng-click="showOrderDetail($event,$index)">
+            <div class="status status-{{order.condititon}}">{{order.status}}</div>
+            <h4 flex="40">Order: {{order.id}}</h4>
+            <span flex></span>
+            <h5 flex="40">Orderer: {{order.orderer}}</h5>
+            <div class="md-secondary">
+              <md-button ng-click="startNewReport($event, $index)"><md-icon md-svg-src="img/report.svg"></md-icon> Report</md-button>
+              <md-button><md-icon md-svg-src="img/reject.svg"></md-icon> Reject</md-button>
+            </div>
+      </md-list-item>
+    </md-list>
+  </div>
+</div>

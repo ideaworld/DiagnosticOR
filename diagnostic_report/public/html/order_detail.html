@@ -1,0 +1,110 @@
+<md-dialog class="order-detail-dialog detail-dialog" ng-cloak>
+  <md-toolbar class="md-primary">
+		<div class="md-toolbar-tools">
+	        <h2 class="dialog-title">Order Detail</h2>
+	        <span flex></span>
+	        <md-button class="md-icon-button" ng-click="hide()">
+	          <md-icon md-svg-src="/static/img/close.svg" aria-label="Close dialog"></md-icon>
+	        </md-button>
+      </div>
+	</md-toolbar>
+  <md-dialog-content>
+    <div class="contents" layout="column" layout-padding>
+      <div class="detail-item">
+        <span class="detail-title">Id:</span>
+        {{info.id}}
+      </div>
+      <div class="detail-item" ng-if="check_key('subject')">
+        <span class="detail-title">Subject:</span>
+        {{info.subject}}
+      </div>
+      <div class="detail-item">
+        <span class="detail-title">Orderer: </span>
+        {{info.orderer}}
+      </div>
+      <div class="detail-item" ng-if="check_key('specimen')">
+        <span class="detail-title">Specimen: </span>
+        <span ng-repeat="specimen in info.specimen">{{specimen.display}}(specimen.reference), </span>
+      </div>
+      <div class="detail-item" ng-if="check_key('reason')">
+        <span class="detail-title">Reason: </span>
+        {{info.reason}}
+      </div>
+      <div class="detail-item" ng-if="check_key('status')">
+        <span class="detail-title">Status: </span>
+        {{info.status}}
+      </div>
+      <div class="detail-item" ng-if="check_key('event')">
+        <span class="detail-title-line">Event</span>
+        <div class="detail-item-table">
+          <table class="md-table">
+            <thead>
+              <tr class="md-table-headers-row">
+                <th ng-repeat="h in event_headers" class="md-table-header">
+                  <a href="" ng-if="handleSort(h.field)" ng-click="reverse=!reverse;order(h.field,reverse)">{{h.name}}
+                  </a>
+                </th>
+                <th class="md-table-header"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="c in event_content" class="md-table-content-row">
+                <!-- <td>
+                  <div ng-repeat="h in headers" ng-if="h.field == thumbs" class="md-table-thumbs">
+                    <div style="background-image:url({{c.thumb}})"></div>
+                  </div>
+                </td> -->
+                <td ng-repeat="h in event_headers" ng-class="customClass[h.field]" ng-if="h.field != thumbs" class="md-table-content">{{(h.field.indexOf('date') > 0) ? $filter('date')(c[h.field]) : c[h.field]}}</td>
+                <!-- <td class="md-table-td-more">
+                  <md-button aria-label="Info"><i class="ion-android-more-vertical"></i></md-button>
+                </td> -->
+              </tr>
+            </tbody>
+          </table><!--.md-table-->
+        </div>
+      </div>
+      <div class="details-item" ng-if="check_key('item')">
+        <span class="detail-title-line">Item</span>
+        <div class="detail-item-table">
+          <table class="md-table">
+            <thead>
+              <tr class="md-table-headers-row">
+                <th ng-repeat="h in item_headers" class="md-table-header">
+                  <a href="" ng-if="item_handleSort(h.field)" ng-click="item_reverse=!item_reverse;item_order(h.field,item_reverse)">{{h.name}}
+                  </a>
+                </th>
+                <th class="md-table-header"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="c in item_content" class="md-table-content-row">
+                <!-- <td>
+                  <div ng-repeat="h in headers" ng-if="h.field == thumbs" class="md-table-thumbs">
+                    <div style="background-image:url({{c.thumb}})"></div>
+                  </div>
+                </td> -->
+                <td ng-repeat="h in item_headers" ng-class="customClass[h.field]" ng-if="h.field != thumbs" class="md-table-content">{{(h.field.indexOf('date') > 0) ? $filter('date')(c[h.field]) : c[h.field]}}</td>
+                <!-- <td class="md-table-td-more">
+                  <md-button aria-label="Info"><i class="ion-android-more-vertical"></i></md-button>
+                </td> -->
+              </tr>
+            </tbody>
+          </table><!--.md-table-->
+        </div>
+      </div>
+      <div class="detail-item" ng-if="check_key('note')">
+        <span class="detail-title-line">Note: </span>
+        {{info.note}}
+      </div>
+    </div>
+  </md-dialog-content><!-- md-dialog-content -->
+  <md-dialog-actions layout="row" layout-padding>
+		<md-button ng-click="hide()">
+        Cancel
+      </md-button>
+      <md-button class="md-primary md-raised" ng-click="new_report()">
+        <md-icon md-svg-src="/static/img/report.svg"></md-icon>
+       	Report
+      </md-button>
+	</md-dialog-actions>
+</md-dialog><!--.order-detail-dialog -->

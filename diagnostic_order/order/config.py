@@ -14,8 +14,8 @@ CLINICAL = {
 }
 # OAuth2 settings for communicating with genomic server
 GENOMICS = {
-    'client_id': 'a230d3be-e35e-43b8-a30e-befe6b2c70ea',
-    'redirect_uri': 'http://genomics-advisor.smartplatforms.org:2048/',
+    'client_id': '1616ac36-0e85-4b81-89be-b5922bd7247b',
+    'redirect_uri': 'http://localhost:8000/recv_redirect/',
     'scopes': ['user/Sequence.read', 'user/Patient.read','user/Sequence.write'],
     'oauth_base': 'http://genomics-advisor.smartplatforms.org:8005/auth',
     'api_base': 'http://genomics-advisor.smartplatforms.org:8005/api'
@@ -28,7 +28,7 @@ SECRET_KEY = 'hello, world!'
 GOOGLE_API_KEY = 'AIzaSyB01GeX_HiuZbHCkZ-P5hJ7yUHVkwFS07Q'
 
 CLIENT_ID ='e29fb523-1489-47bb-b163-39b5cae866e8'
-GENOMIC_ID = 'a252938b-3a71-4e83-b7ec-6fe1b1a3a188'
+GENOMIC_ID = '1616ac36-0e85-4b81-89be-b5922bd7247b'
 GENOMICSCOPE = [
 'user/Sequence.read', 
 'user/Patient.read',

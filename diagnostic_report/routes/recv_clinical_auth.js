@@ -25,10 +25,11 @@ router.get('/', function(req, res, next){
 		},
 		form:datas
 	};
+	console.log("req access token")
 	request(opt, function(error, response, body){
 		if (!error && response.statusCode < 500){
-      console.log(body);
 			req.session.clinical_access_token = JSON.parse(body).access_token;
+      console.log(req.session.clinical_access_token);
       res.redirect('/');
 		}else{
 			console.log(error);

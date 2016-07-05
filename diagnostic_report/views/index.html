@@ -1,71 +1,49 @@
 <!DOCTYPE html>
-<!-- author: Bowen -->
-<html ng-app="diagnostic_report">
+<html lang="en" ng-app="diagnostic_reporter">
 <head>
-	<meta charset="UTF-8">
-	<title>Diagnostic Reporter</title>
-	<script type="text/javascript" src="/static/js/angular.min.js"></script>
-	<script type="text/javascript" src="/static/js/angular-route.min.js"></script>
-	<script type="text/javascript" src="/static/js/jquery-2.1.1.min.js"></script>
-	<script type="text/javascript" src="/static/js/fhir-client.min.js"></script>
-	<script type="text/javascript" src="/static/js/index.js"></script>
-	<script type="text/javascript" src="/static/js/controllers.js"></script>
-	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="/static/css/bootstrap.css">
-	<link rel="stylesheet" href="/static/css/index.css">
-	<link rel="sytlesheet" href="/static/css/order.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+  <title>Diagnostic Reporter</title>
+  <link rel="stylesheet" href="/static/css/angular-material.css">
+  <link rel="stylesheet" href="/static/css/bootstrap.css">
+  <link rel="stylesheet" href="/static/css/main.css">
+  <link rel="stylesheet" href="/static/css/datatable.css">
+  <link rel="stylesheet" href="/static/css/mdPickers.css">
+  <script src="/static/js/angular.min.js"></script>
+  <script src="/static/js/angular-aria.min.js"></script>
+  <script src="/static/js/angular-animate.min.js"></script>
+  <script src="/static/js/angular-route.min.js"></script>
+  <script src="/static/js/angular-material.js"></script>
+  <script src="/static/js/angular-messages.min.js" charset="utf-8"></script>
+  <script src="/static/js/moment.js" charset="utf-8"></script>
+  <script src="/static/js/mdPickers.min.js"></script>
+  <script src="/static/js/index_main.js"></script>
+  <script src="/static/js/index_ctrl.js"></script>
+  <script>
+    moment().format();
+  </script>
 </head>
-<body>
-	<div id="container-fluid">
-		<div id="header">
-			<div class="user-sec">
-				<div class="user-pic">
-					<img src="/static/img/smart.png" alt="pic", class="img-rounded">
-				</div><!-- div.user-pic -->
-				<div class="user-info row">
-					<div class="col-md-4 col-lg-4 user-name pull-right">
-						<h1>Diagnostic Reporter</h1>
-					</div><!-- div.user-name -->
-				</div><!-- div.user-info -->
-			</div><!-- div.user-sec -->
-		</div><!-- div#header -->
-		<div id="main">
-		<div id="left-panel" ng-controller="left_panel">
-			<div class="item-list" id="order">
-				<div class="title">
-					<h3 ng-click="toggle_order()">Order</h3>
-				</div>
-				<div class="lists" ng-hide="order_flag">
-					<ul>
-						<li ng-click="get_all_orders()">All Orders</li>
-						<li ng-click="get_na_orders()">Not Accpeted</li>
-						<li ng-click="get_ac_orders()">Accepted</li>
-						<li ng-click="get_rj_orders()">Rejected</li>
-					</ul>
-				</div>
-			</div><!-- div#order -->
-			<div class="item-list" id="report">
-				<div class="title">
-					<h3 ng-click="toggle_report()">Report</h3>
-				</div>
-				<div class="lists" ng-hide="report_flag">
-					<ul>
-						<li ng-click="get_report()">Registered</li>
-						<li ng-click="get_report()">Partial</li>
-						<li ng-click="get_report()">Corrected</li>
-						<li ng-click="get_report()">Appended</li>
-						<li ng-click="get_report()">Cancelled</li>
-						<!--li ng-click="get_report()">Entered in Error</li-->
-					</ul>
-				</div>
-			</div><!-- div#report -->
-		</div><!-- div#left-panel -->
-		<div ng-view id="mid-panel">
-
-		</div><!-- div#mid-panel -->
-		</div><!-- div#main -->
-		<div class="footer-right pull-right">Designed and Developed by Bowen</div>
-	</div><!-- div#container-fulid -->
-
+<body ng-cloak>
+  <div class="out-board" layout="row" flex>
+    <md-sidnav layout="column" flex="20" class="md-sidenav-left md-whiteframe-z2 ng-isolate-scope main-nav nav-content-bgcolor" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+      <md-toolbar class="md-theme-indigo">
+        <img class="logo-img" src="/static/img/smart.png" alt="logo" class="img-responsive">
+        <h1 class="md-toolbar-tools">Diagnostic Reporter</h1>
+      </md-toolbar>
+      <md-content flex class="nav-content" layout-padding>
+        <md-list ng-cloak>
+          <md-list-item class="list-btn">
+            <a ng-href="#/orders" class="md-button md-primary">Orders</a>
+          </md-list-item>
+          <md-divider></md-divider>
+          <md-list-item class="list-btn">
+            <a ng-href="#/reports" class="md-button md-primary">Reports</a>
+          </md-list-item>
+          <md-divider></md-divider>
+        </md-list>
+      </md-content>
+    </md-sidnav>
+    <div class="main" ng-view layout="row" flex="80"></div>
+  </div>
 </body>
 </html>

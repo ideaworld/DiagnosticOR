@@ -10,7 +10,7 @@ var request = require('request');
 
 router.post('/create_report', function(req, res, next){
   var report_data = req.body.report;
-  genomic_api_call.create('reportforgenetics', report_data, req.session.access_token, res);
+  clinical_api.create('DiagnosticReport', report_data, req.session.clinical_token, res);
 });
 
 router.post('/create_observation', function(req, res, next){
@@ -19,27 +19,34 @@ router.post('/create_observation', function(req, res, next){
 });
 
 router.get('/all_report', function(req, res, next){
-  genomic_api_call.getAll('reportforgenetics', req.session.access_token, res);
+  console.log('get all report');
+  clinical_api.getAll('DiagnosticReport', req.session.clinical_token, res);
+});
+
+router.get('/all', function(req, res, next){
+  var type = req.param('type');
+  genomic_api_call.getAll(type, req.session.access_token, res);
 });
 
 router.get('/all_order', function(req, res, next){
+  console.log('get all order');
   genomic_api_call.getAll('orderforgenetics' ,req.session.access_token ,res);
 });
 
 router.post('/update_report', function(req, res, next){
   var report_data = req.body.report;
   var id = req.body.id;
-  genomic_api_call.update('reportforgenetics', id, report_data, req.session.access_token, res)
+  clinical_api.update('DiagnosticReport', id, report_data, req.session.clinical_token, res)
 });
 
 router.post('/update_order', function(req, res, next){
-  var req_json = req.body;                                                                                         
+  var req_json = req.body;
   genomic_api_call.update('orderforgenetics', req_json.id, req_json.order_data, req.session.access_token, res);
 });
 
 router.post('/update_observation', function(req, res, next){
-  var req_json = req.body;  
-  console.log(req_json.order_data);                                                                                       
+  var req_json = req.body;
+  console.log(req_json.order_data);
   genomic_api_call.update('observationforgenetics', req_json.id, req_json.order_data, req.session.access_token, res);
 });
 
@@ -48,7 +55,7 @@ router.get('/all_observation', function(req, res, next){
 });
 
 router.get('/order', function(req, res, next){
-  
+
   genomic_api_call.read('orderforgenetics', req.query.id, req.session.access_token, res);
 });
 
@@ -71,6 +78,12 @@ router.get('/Sequence', function(req, res, next){
 
 router.get('/all_Patient', function(req, res, next){
   genomic_api_call.getAll( 'Patient', req.session.access_token, res);
+})
+
+router.get('/clinical', function(req, res, next){
+  var type = req.param('type');
+  console.log(type);
+  clinical_api.getAll(type, req.session.clinical_token, res);
 })
 
 

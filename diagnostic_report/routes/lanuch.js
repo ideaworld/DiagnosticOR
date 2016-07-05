@@ -9,14 +9,22 @@ var requestify = require('requestify');
 router.get('/', function(req, res, next) {
 	req.session.iss = req.query.iss;
 	req.session.launch = req.query.launch;
-    console.log('genomics?');
-	if (!req.session || !req.session.access_token) {
-		console.log('genomics');
-		res.redirect('/req_genomics_auth/');
-	}
-    console.log('clinic?');
-    res.redirect('/req_genomics_auth/');
-	//res.render('launch.html', {});
+    //console.log('genomics?');
+    //request genomics authorization jump for a test purpose
+    if((!req.session || !req.session.access_token) && !req.session.jump_genomics){
+        res.redirect('/req_genomics_auth/');
+    }
+    //request clinical authorization
+	if(!req.session || !req.session.clinical_access_token){
+        get_clinical_auth(req, res);
+        console.log('clinical');
+    }
+    if(req.session && req.session.access_token && req.session.clinical_access_token){
+        res.redirect('/')
+    }
+    // page will be redirected to index page after all authorization
+    
+	res.render('launch.html', {});
 });
 
 function get_clinical_auth(req, res){
@@ -32,7 +40,8 @@ function get_clinical_auth(req, res){
         "scope=" + encodeURIComponent(scope) + "&" +
         "redirect_uri=" + encodeURIComponent(redirectUri) + "&" +
         "aud=" + encodeURIComponent(serviceUri) + "&" +
-        "launch=" + launchContextId);
+        "launch=" + launchContextId + "&" +
+        "state=" + Math.round(Math.random()*100000000).toString());
             /*
 	$.get(conformanceUri, function(r){
 		var authUri, tokenUri;

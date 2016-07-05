@@ -1,0 +1,34 @@
+<div class="main" layout="column" flex layout-padding>
+  <div class="select-area" flex="7" layout="row" layout-padding  layout-align="start center">
+    <span flex></span>
+    <h4 class="inpage-title" flex="20">Status: </h4>
+    <md-input-container flex="30">
+      <label>Report Status</label>
+      <md-select ng-model="status">
+        <md-option value="">All</md-option>
+        <md-option value="registered">Registered</md-option>
+        <md-option value="partial">Partial</md-option>
+        <md-option value="final">Final</md-option>
+        <md-option value="corrected">Corrected</md-option>
+        <md-option value="appended">Appended</md-option>
+        <md-option value="cancelled">Cancelled</md-option>
+        <md-option value="entered-in-error">Entered-in-error</md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+  <md-divider></md-divider>
+  <div layout="row" class="orders-area" flex="90">
+    <md-list class="or-list" flex>
+      <md-list-item ng-repeat="report in reports" class="or-item" layout="row" layout-align="center center" ng-click="showReportDetail($event, $index)">
+            <div class="status status-good">{{report.status}}</div>
+            <h4 flex="40">Report: {{report.id}}</h4>
+            <span flex></span>
+            <h5 flex="40">Performer: {{report.performer.display}}</h5>
+            <div class="md-secondary">
+              <md-button><md-icon md-svg-src="img/Edit.svg"></md-icon> Edit</md-button>
+              <md-button><md-icon md-svg-src="img/reject.svg"></md-icon> Cancel</md-button>
+            </div>
+      </md-list-item>
+    </md-list>
+  </div>
+</div>
