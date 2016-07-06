@@ -5,6 +5,7 @@ var configs = require('./configs.js');
 var request = require('request');
 
 var doGet = function(url, access_token, res){
+  console.log('final url:  '+url);
   requestify.get(url, {
     headers :{'Accept': 'application/json',
               'Authorization': 'Bearer ' + access_token}
@@ -83,40 +84,39 @@ var doPut = function(url, data, access_token, res){
   */
 }
 
-var search = function(type, querys, access_token, res){
+var search = function(type, querys, access_token, api_url, res){
   console.log(2);
   var queryString = queryBuilder.query(querys);
   console.log(queryString);
-  var url = configs.clinical_api_uri + '/' + type + '?' + queryString;
+  var url = api_url + '/' + type + '?' +queryString;
   console.log(url);
   var get_response = doGet(url, access_token, res);
-  return get_response;
 }
 
-var getAll = function(type, access_token, res){
+var getAll = function(type, access_token, api_url, res){
   console.log(access_token);
-  var url = configs.clinical_api_uri + '/' + type + '?_format=json';
+  var url = api_url + '/' + type;
   console.log(url);
   doGet(url, access_token, res);
 }
 
-var create = function(type, data, access_token, res){
+var create = function(type, data, access_token, api_url, res){
   console.log('cin');
   var type = data.resourceType;
-  var url = configs.clinical_api_uri + '/' + type + '?_format=json';
+  var url = api_url + '/' + type ;
   console.log(url);
   return doPost(url, data, access_token, res);
 }
 
-var read = function(type, id, access_token, res){
-  var url = configs.clinical_api_uri + '/' + type + '/' + id + '?_format=json';
+var read = function(type, id, access_token, api_url, res){
+  var url = api_url + '/' + type + '/' + id ;
   console.log(url);
   doGet(url, access_token, res);
 }
 
-var update = function(type, id, data, access_token, res){
+var update = function(type, id, data, access_token, api_url, res){
   console.log('updateing');
-  var url = configs.clinical_api_uri + '/' + type + '/' + id;
+  var url = api_url + '/' + type + '/' + id;
   console.log(url);
   return doPut(url, data, access_token, res)
 }

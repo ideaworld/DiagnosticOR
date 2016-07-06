@@ -8,9 +8,13 @@ DiaReportController.controller('rlistCtrl', function($scope, $http, $location, $
   $scope.chosen_status="";
 	$scope.init = function(){
 		$http.get('/datas/all_report').success(function(data){
-			var datas = data.entry.map(function(item){return item.resource});
-
-			$scope.reports = reportDataFormat(datas);
+      if(data.total == 0){
+        console.log(data);
+        return
+      }else{
+        var datas = data.entry.map(function(item){return item.resource});
+  			$scope.reports = reportDataFormat(datas);
+      }
 		});
 	}
 	$scope.init();
@@ -182,6 +186,7 @@ function reportDetailCtrl($scope, $mdDialog, $http, $filter, info, isNew){
       $scope.oid = observationFormat(obs_raw_data);
     });
     $http.get('/datas/clinical?type=Patient').success(function(data){
+      console.log(data);
       if('entry' in data){
         var datas = data.entry.map(function(item){return item.resource;});
         Array.prototype.push.apply(subject_raw_data, datas);

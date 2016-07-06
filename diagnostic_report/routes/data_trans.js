@@ -10,7 +10,8 @@ var request = require('request');
 
 router.post('/create_report', function(req, res, next){
   var report_data = req.body.report;
-  clinical_api.create('DiagnosticReport', report_data, req.session.clinical_token, res);
+  //var api_url = req.session['iss'];
+  genomic_api_call.create('reportforgenetics', report_data, req.session.access_token, res);
 });
 
 router.post('/create_observation', function(req, res, next){
@@ -20,7 +21,10 @@ router.post('/create_observation', function(req, res, next){
 
 router.get('/all_report', function(req, res, next){
   console.log('get all report');
-  clinical_api.getAll('DiagnosticReport', req.session.clinical_token, res);
+  var api_url = req.session['iss'];
+  console.log(req.session);
+  console.log(api_url);
+  genomic_api_call.getAll('reportforgenetics', req.session.access_token, res);
 });
 
 router.get('/all', function(req, res, next){
@@ -35,8 +39,9 @@ router.get('/all_order', function(req, res, next){
 
 router.post('/update_report', function(req, res, next){
   var report_data = req.body.report;
+  var api_url = req.session.iss;
   var id = req.body.id;
-  clinical_api.update('DiagnosticReport', id, report_data, req.session.clinical_token, res)
+  genomic_api_call.update('reportforgenetics', id, report_data, req.session.access_token, res)
 });
 
 router.post('/update_order', function(req, res, next){
@@ -60,7 +65,12 @@ router.get('/order', function(req, res, next){
 });
 
 router.get('/report', function(req, res, next){
-  genomic_api_call.read('reportforgenetics', req.query.id, req.session.access_token, res);
+  console.log(1);
+  var api_url = req.session['iss'];
+  console.log(req.session);
+  console.log(api_url);
+  console.log(2);
+  clinical_api.search('DiagnosticReport', {id:''}, req.session.clinical_token, api_url, res);
 })
 
 router.get('/Patient', function(req, res, next){
@@ -82,8 +92,11 @@ router.get('/all_Patient', function(req, res, next){
 
 router.get('/clinical', function(req, res, next){
   var type = req.param('type');
+  console.log(req.session);
   console.log(type);
-  clinical_api.getAll(type, req.session.clinical_token, res);
+  var api_url = req.session['iss'];
+  console.log(api_url);
+  clinical_api.getAll(type, req.session.clinical_token, api_url ,res);
 })
 
 
