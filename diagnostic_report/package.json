@@ -14,5 +14,10 @@
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
     "ejs": "~2.3.4"
-  }
+  },
+  "main": "app.js",
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
