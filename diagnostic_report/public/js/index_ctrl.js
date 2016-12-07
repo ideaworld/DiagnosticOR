@@ -206,12 +206,12 @@ function reportDetailCtrl($scope, $mdDialog, $http, $filter, info, isNew){
           console.log($scope.subjects);
         });
       });
-      $http.get('/datas/clinical?type=Practitioner').success(function(data){
-        var datas = data.entry.map(function(item){return item.resource;});
-        Array.prototype.push.apply(performer_raw_data, datas);
-        console.log(performer_raw_data);
-        $scope.performers = performerFormat(performer_raw_data);
-      });
+    });
+    $http.get('/datas/clinical?type=Practitioner').success(function(data){
+      var datas = data.entry.map(function(item){return item.resource;});
+      Array.prototype.push.apply(performer_raw_data, datas);
+      console.log(performer_raw_data);
+      $scope.performers = performerFormat(performer_raw_data);
     });
   }
   $scope.init_data();

@@ -1,0 +1,737 @@
+<md-dialog class="order-detail-dialog detail-dialog" ng-cloak>
+  <md-toolbar class="md-primary">
+		<div class="md-toolbar-tools">
+	        <h2 class="dialog-title">Order Detail</h2>
+	        <span flex></span>
+	        <md-button class="md-icon-button" ng-click="hide()">
+	          <md-icon md-svg-src="/static/img/close.svg" aria-label="Close dialog"></md-icon>
+	        </md-button>
+      </div>
+	</md-toolbar>
+  <md-dialog-content>
+    <div class="contents" layout="column" layout-padding>
+      <div class="detail-item">
+        <span class="detail-title">ID: </span>
+        {{info.id}}
+      </div>
+      <div class="detail-item" layout="row">
+        <span class="detail-title" flex="30">Status:</span>
+        <md-input-container flex="40">
+          <md-select ng-model="info.status">
+            <md-option value="proposed">Proposed</md-option>
+            <md-option value="draft">Draft</md-option>
+            <md-option value="planned">Planned</md-option>
+            <md-option value="requested">Requested</md-option>
+            <md-option value="received">Received</md-option>
+            <md-option value="accepted">Accepted</md-option>
+            <md-option value="in-progress">In-Progress</md-option>
+            <md-option value="review">Review</md-option>
+            <md-option value="completed">Completed</md-option>
+            <md-option value="cancelled">Cancelled</md-option>
+            <md-option value="suspended">Suspended</md-option>
+            <md-option value="rejected">Rejected</md-option>
+            <md-option value="failed">Failed</md-option>
+          </md-select>
+        </md-input-container>
+      </div><!--div.detail-item-->
+      <div class="detail-item" layout="row">
+        <span class="detail-title-line" flex="30">Priority</span>
+        <md-input-container flex="40">
+          <md-select ng-model="info.priority">
+            <md-option value="routine">Routine</md-option>
+            <md-option value="urgent">Urgent</md-option>
+            <md-option value="stat">Stat</md-option>
+            <md-option value="asap">ASAP</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div class="detail-item">
+        <span class="detail-title-line">Subject: </span>
+        <div class="md-secondary detail-item-btn">
+          <md-button ng-click="isSHidden=!isSHidden"><md-icon md-svg-src="/static/img/replace.svg"></md-icon></md-icon></md-button>
+        </div>
+        <div class="detail-item-content">
+          <div class="detail-subitem">
+            <span>{{info.subject}}</span>
+          </div>
+          <div class="sub-item" ng-hide="isSHidden" layout="row">
+            <md-autocomplete flex="70"
+                md-no-cache="true"
+                md-selected-item="subselectedItem"
+                md-search-text="subsearchText"
+                md-selected-item-change="subselectedItemChange(item)"
+                md-items="item in querySearch(subsearchText, subjects)"
+                md-item-text="item.display"
+                md-min-length="0"
+                placeholder="Please enter an subject">
+              <md-item-template>
+                <span md-highlight-text="subsearchText" md-highlight-flags="^i">{{item.display}}</span>
+              </md-item-template>
+              <md-not-found>
+                No subject matching "{{subsearchText}}" were found.
+              </md-not-found>
+            </md-autocomplete>
+            <span flex></span>
+          </div>
+        </div>
+      </div><!--div.detail-item-->
+      <div class="detail-item">
+        <span class="detail-title-line">Reason</span>
+        <div class="md-secondary detail-item-btn">
+          <md-button ng-click="isRHidden=!isRHidden">New</md-button>
+        </div>
+        <div class="detail-item-content">
+          <div class="detail-subitem" ng-repeat="reason in info.reason">
+            <span>{{reason.text}}</span>
+          </div>
+          <div class="detail-subitem" layout="row" ng-hide="isRHidden">
+            <md-autocomplete flex="60"
+                md-no-cache="true"
+                md-selected-item="reasonSelect"
+                md-search-text="reasonText"
+                md-selected-item-change="reasonChanged(item)"
+                md-items="item in remoteAutoComplete(reasonText, 'code')"
+                md-item-text="item.display"
+                md-min-length="0"
+                placeholder="Please enter a subject">
+              <md-item-template>
+                <span md-highlight-text="reasonText" md-highlight-flags="^i">{{item.display}}</span>
+              </md-item-template>
+              <md-not-found>
+                No subject matching "{{reasonText}}" were found.
+              </md-not-found>
+            </md-autocomplete>
+            <div class="detail-item-btn" flex="10">
+              <md-button ng-click="addNewReason()">Add</md-button>
+            </div>
+          </div>
+        </div>
+      </div><!--div.detail-item-->
+      <div class="detail-item">
+        <span class="detail-title-line">Orderer: </span>
+        <div class="md-secondary detail-item-btn">
+          <md-button ng-click="isOHidden=!isOHidden"><md-icon md-svg-src="/static/img/replace.svg"></md-icon></md-icon></md-button>
+        </div>
+        <div class="detail-item-content">
+          <div class="detail-subitem">
+            <span>{{info.orderer}}</span>
+          </div>
+          <div class="subitem" layout="row" ng-hide="isOHidden">
+            <md-autocomplete flex="70"
+                md-no-cache="true"
+                md-selected-item="orderSelected"
+                md-search-text="orderText"
+                md-selected-item-change="orselectedItemChange(item)"
+                md-items="item in querySearch(orderText, orderers)"
+                md-item-text="item.display"
+                md-min-length="0"
+                placeholder="Please enter an subject">
+              <md-item-template>
+                <span md-highlight-text="orderText" md-highlight-flags="^i">{{item.display}}</span>
+              </md-item-template>
+              <md-not-found>
+                No subject matching "{{orderText}}" were found.
+              </md-not-found>
+            </md-autocomplete>
+            <span flex></span>
+          </div>
+        </div>
+      </div><!--div.detail-item-->
+      <div class="detail-item">
+        <span class="detail-title-line">Encounter: </span>
+        <div class="md-secondary detail-item-btn">
+          <md-button ng-click="isEHidden=!isEHidden"><md-icon md-svg-src="/static/img/replace.svg"></md-icon></md-icon></md-button>
+        </div>
+        <div class="detail-item-content">
+          <div class="detail-subitem">
+            {{info.encounter}}
+          </div>
+          <div class="detail-subitem" layout="row" ng-hide="isEHidden">
+            <md-autocomplete flex="70"
+                md-no-cache="true"
+                md-selected-item="encounterSelected"
+                md-search-text="encounterText"
+                md-selected-item-change="enselectedItemChange(item)"
+                md-items="item in querySearch(encounterText, encounters)"
+                md-item-text="item.display"
+                md-min-length="0"
+                placeholder="Please enter an subject">
+              <md-item-template>
+                <span md-highlight-text="encounterText" md-highlight-flags="^i">{{item.display}}</span>
+              </md-item-template>
+              <md-not-found>
+                No subject matching "{{encounterText}}" were found.
+              </md-not-found>
+            </md-autocomplete>
+            <span flex></span>
+          </div>
+        </div>
+      </div><!--div.detail-item-->
+      <div class="detail-item">
+        <span class="detail-title-line">Supporting Information: </span>
+        <div class="md-secondary detail-item-btn"><md-button ng-click="isSUHidden=!isSUHidden"> New</md-button></div>
+        <div class="detail-content">
+          <div class="detail-subitem">
+            <div class="line" ng-repeat="support in info.supportingInformation">{{support.reference}}</div>
+          </div>
+          <div class="detail-subitem" layout="row" ng-hide="isSUHidden">
+            <md-autocomplete flex="70"
+                md-no-cache="true"
+                md-selected-item="supportSelected"
+                md-search-text="supportText"
+                md-selected-item-change="supportItemChanged(item)"
+                md-items="item in querySearch(supportText, supportings)"
+                md-item-text="item.display"
+                md-min-length="0"
+                placeholder="Please enter a subject">
+              <md-item-template>
+                <span md-highlight-text="supportText" md-highlight-flags="^i">{{item.display}}</span>
+              </md-item-template>
+              <md-not-found>
+                No subject matching "{{supportText}}" were found.
+              </md-not-found>
+            </md-autocomplete>
+            <div flex="20" class="md-secondary detail-item-btn"><md-button ng-click="addSupport()"><md-icon md-svg-src="/static/img/add.svg"></md-icon></md-icon></md-button></div>
+          </div>
+        </div>
+      </div><!--div.detail-item-->
+      <div class="detail-item">
+        <span class="detail-title-line">Specimen: </span>
+        <div class="md-secondary detail-item-btn"><md-button ng-click="isSPEHidden=!isSPEHidden">New</md-button></div>
+        <div class="detail-content">
+          <div class="detail-subitem">
+            <div class="line" ng-repeat="specimen in info.specimen">{{specimen.reference}}</div>
+          </div>
+          <div class="detail-subitem" layout="row" ng-hide="isSPEHidden">
+            <md-autocomplete flex="70"
+                md-no-cache="true"
+                md-selected-item="specimenSelect"
+                md-search-text="specimenText"
+                md-selected-item-change="specimenChanged(item)"
+                md-items="item in querySearch(specimenText, specimens)"
+                md-item-text="item.display"
+                md-min-length="0"
+                placeholder="Please enter a subject">
+              <md-item-template>
+                <span md-highlight-text="specimenText" md-highlight-flags="^i">{{item.display}}</span>
+              </md-item-template>
+              <md-not-found>
+                No subject matching "{{specimenText}}" were found.
+              </md-not-found>
+            </md-autocomplete>
+            <div flex="20" class="md-secondary detail-item-btn"><md-button ng-click="addSpecimen()"><md-icon md-svg-src="/static/img/add.svg"></md-icon></md-icon></md-button></div>
+          </div>
+        </div>
+      </div><!-- div.detail-item -->
+      <div class="detail-item">
+        <span class="detail-title-line">Event</span>
+        <div class="detail-content">
+          <!-- events in info -->
+          <div class="detail-subitem" layout="column" ng-repeat="event in info.event">
+            <div layout="row" layout-align="start center">
+              <span class="detail-subtitle" flex="15">Event-status:</span>
+              <md-input-container flex="60">
+                <md-select ng-model="event.status">
+                  <md-option value="proposed">Proposed</md-option>
+                  <md-option value="draft">Draft</md-option>
+                  <md-option value="planned">Planned</md-option>
+                  <md-option value="requested">Requested</md-option>
+                  <md-option value="received">Received</md-option>
+                  <md-option value="accepted">Accepted</md-option>
+                  <md-option value="in-progress">In-Progress</md-option>
+                  <md-option value="review">Review</md-option>
+                  <md-option value="completed">Completed</md-option>
+                  <md-option value="cancelled">Cancelled</md-option>
+                  <md-option value="suspended">Suspended</md-option>
+                  <md-option value="rejected">Rejected</md-option>
+                  <md-option value="failed">Failed</md-option>
+                </md-select>
+              </md-input-container>
+            </div>
+            <div layout="row" layout-align="start center">
+              <span class="detail-subtitle" flex="15">Event DateTime</span>
+              <div class="time-picker" layout="row" layout-padding flex="60">
+                <mdp-date-picker mdp-placeholder="Date" ng-model="event.event_date" flex="50"></mdp-date-picker>
+                <mdp-time-picker mdp-placeholder="Time" ng-model="event.event_time" flex="50"></mdp-time-picker>
+              </div>
+            </div>
+            <div layout="row" layout-align="start center" layout-padding>
+              <span class="detail-subtitle" flex="15">Event Actor </span>
+              <md-autocomplete flex="60"
+                  md-no-cache="true"
+                  md-selected-item="eventActorSelect"
+                  md-search-text="eventActorText"
+                  md-selected-item-change="eventActorChanged(item, $index)"
+                  md-items="item in querySearch(eventActorText, event_actors)"
+                  md-item-text="item.display"
+                  md-min-length="0"
+                  placeholder="Please enter a subject">
+                <md-item-template>
+                  <span md-highlight-text="eventActorText" md-highlight-flags="^i">{{item.display}}</span>
+                </md-item-template>
+                <md-not-found>
+                  No subject matching "{{eventActorText}}" were found.
+                </md-not-found>
+              </md-autocomplete>
+              <span flex="20" class="small_text">{{event.actor.reference}}</span>
+            </div>
+            <div layout="row" layout-align="start center" layout-padding>
+              <span class="detail-subtitle" flex="15">Event Description</span>
+              <md-input-container flex="60">
+                <md-select ng-model="event.description.coding[0].code">
+                  <md-option value=""></md-option>
+                  <md-option value="440622005">Specimen received</md-option>
+                  <md-option value="394838008">Test request</md-option>
+                  <md-option value="26895000">Laboratory test order cancellation</md-option>
+                </md-select>
+              </md-input-container>
+            </div>
+          </div>
+          <div class="detail-subitem" layout="row" layout-align="center center">
+            <md-button ng-click="isAddEventHidden=!isAddEventHidden" class="md-primary md-raised" flex="20"><md-icon md-svg-src='/static/img/add.svg'></md-icon> New Event</md-button>
+          </div>
+          <div class="detail-subitem" layout="column" ng-hide="isAddEventHidden">
+            <div layout="row" layout-align="center center">
+              <span class="detail-subtitle" flex="15">Event-status:</span>
+              <md-input-container flex="60">
+                <md-select ng-model="newEvent_status">
+                  <md-option value="proposed">Proposed</md-option>
+                  <md-option value="draft">Draft</md-option>
+                  <md-option value="planned">Planned</md-option>
+                  <md-option value="requested">Requested</md-option>
+                  <md-option value="received">Received</md-option>
+                  <md-option value="accepted">Accepted</md-option>
+                  <md-option value="in-progress">In-Progress</md-option>
+                  <md-option value="review">Review</md-option>
+                  <md-option value="completed">Completed</md-option>
+                  <md-option value="cancelled">Cancelled</md-option>
+                  <md-option value="suspended">Suspended</md-option>
+                  <md-option value="rejected">Rejected</md-option>
+                  <md-option value="failed">Failed</md-option>
+                </md-select>
+              </md-input-container>
+            </div>
+            <div layout="row" layout-align="center center">
+              <span class="detail-subtitle" flex="15">Event DateTime</span>
+              <div class="time-picker" layout="row" layout-padding flex="60">
+                <mdp-date-picker mdp-placeholder="Date" ng-model="newEvent_date" flex="50"></mdp-date-picker>
+                <mdp-time-picker mdp-placeholder="Time" ng-model="newEvent_time" flex="50"></mdp-time-picker>
+              </div>
+            </div>
+            <div layout="row" layout-align="center center" layout-padding>
+              <span class="detail-subtitle" flex="15">Event Actor </span>
+              <md-autocomplete flex="60"
+                  md-no-cache="true"
+                  md-selected-item="neweventActorSelect"
+                  md-search-text="neweventActorText"
+                  md-selected-item-change="neweventActorChanged(item)"
+                  md-items="item in querySearch(neweventActorText, event_actors)"
+                  md-item-text="item.display"
+                  md-min-length="0"
+                  placeholder="Please enter a subject">
+                <md-item-template>
+                  <span md-highlight-text="neweventActorText" md-highlight-flags="^i">{{item.display}}</span>
+                </md-item-template>
+                <md-not-found>
+                  No subject matching "{{neweventActorText}}" were found.
+                </md-not-found>
+              </md-autocomplete>
+            </div>
+            <div layout="row" layout-align="center center" layout-padding>
+              <span class="detail-subtitle" flex="15">Event Description</span>
+              <md-input-container flex="60">
+                <md-select ng-model="newEvent_description">
+                  <md-option value=""></md-option>
+                  <md-option value="440622005">Specimen received</md-option>
+                  <md-option value="394838008">Test request</md-option>
+                  <md-option value="26895000">Laboratory test order cancellation</md-option>
+                </md-select>
+              </md-input-container>
+            </div>
+            <div layout="row" layout-aligin="end end">
+              <md-button ng-click="addNewEvent()" class="md-raised md-primary">Add</md-button>
+            </div>
+          </div>
+        </div>
+      </div><!--div.detail-item-->
+      <div class="detail-item">
+        <span class="detail-title-line">Item</span>
+        <div class="detail-content">
+          <!-- item info -->
+          <div ng-repeat="itemobj in info.item" class="detail-subitem" layout="column" layout-padding>
+            <div layout="row" layout-align="start center">
+              <span class="detail-subtitle" flex="15">Item Status</span>
+              <md-input-container flex="60">
+                <md-select ng-model="itemobj.status">
+                  <md-option value="proposed">Proposed</md-option>
+                  <md-option value="draft">Draft</md-option>
+                  <md-option value="planned">Planned</md-option>
+                  <md-option value="requested">Requested</md-option>
+                  <md-option value="received">Received</md-option>
+                  <md-option value="accepted">Accepted</md-option>
+                  <md-option value="in-progress">In-Progress</md-option>
+                  <md-option value="review">Review</md-option>
+                  <md-option value="completed">Completed</md-option>
+                  <md-option value="cancelled">Cancelled</md-option>
+                  <md-option value="suspended">Suspended</md-option>
+                  <md-option value="rejected">Rejected</md-option>
+                  <md-option value="failed">Failed</md-option>
+                </md-select>
+              </md-input-container>
+            </div>
+            <div layout="row" layout-align="start center" layout-padding>
+              <span class="detail-subtitle" flex="15">Item Code</span>
+              <md-autocomplete flex="50"
+                  md-no-cache="true"
+                  md-selected-item="itemCodeSelect"
+                  md-search-text="itemCodeText"
+                  md-selected-item-change="itemCodeselected(item, $index)"
+                  md-items="item in remoteAutoComplete(itemCodeText, 'loinc_code')"
+                  md-item-text="item.display"
+                  md-min-length="0"
+                  placeholder="Please enter a subject">
+                <md-item-template>
+                  <span md-highlight-text="itemCodeText" md-highlight-flags="^i">{{item.display}}</span>
+                </md-item-template>
+                <md-not-found>
+                  No subject matching "{{itemCodeText}}" were found.
+                </md-not-found>
+              </md-autocomplete>
+              <span flex="10" class="small_text">{{itemobj.code.coding[0].display}}</span>
+            </div>
+            <div layout="row" layout-align="start center">
+              <span class="detail-subtitle" flex="15">Item Specimen</span>
+              <div class="detail-subitem" layout="column" flex="60">
+                <div ng-repeat="itemSpecimen in itemobj.specimen">{{itemSpecimen.reference}}</div>
+                <md-autocomplete
+                    md-no-cache="true"
+                    md-selected-item="itemSpecimenSelect"
+                    md-search-text="itemSpecimenText"
+                    md-selected-item-change="itemSpecimenChanged(item)"
+                    md-items="item in querySearch(itemSpecimenText, specimens)"
+                    md-item-text="item.display"
+                    md-min-length="0"
+                    placeholder="Please enter a subject">
+                  <md-item-template>
+                    <span md-highlight-text="itemSpecimenText" md-highlight-flags="^i">{{item.display}}</span>
+                  </md-item-template>
+                  <md-not-found>
+                    No subject matching "{{itemSpecimenText}}" were found.
+                  </md-not-found>
+                </md-autocomplete>
+                <div flex="20" class="md-secondary detail-item-btn"><md-button ng-click="addItemSpecimen($index)"><md-icon md-svg-src="/static/img/add.svg"></md-icon></md-icon></md-button></div>
+              </div>
+            </div>
+            <div layout="row" layout-align="start center" layout-padding>
+              <span class="detail-subtitle" flex="15">Item bodySite</span>
+              <md-autocomplete flex="50"
+                  md-no-cache="true"
+                  md-selected-item="itemBSSelect"
+                  md-search-text="itemBSText"
+                  md-selected-item-change="itemBSChanged(item, $index)"
+                  md-items="item in remoteAutoComplete(itemBSText, 'code')"
+                  md-item-text="item.display"
+                  md-min-length="0"
+                  placeholder="Please enter a subject">
+                <md-item-template>
+                  <span md-highlight-text="itemBSText" md-highlight-flags="^i">{{item.display}}</span>
+                </md-item-template>
+                <md-not-found>
+                  No subject matching "{{itemBSText}}" were found.
+                </md-not-found>
+              </md-autocomplete>
+              <span flex="10" class="small_text">{{itemobj.bodySite.coding[0].display}}</span>
+            </div>
+            <!-- <div layout="row" layout-align="start center">
+              <span class="detail-subtitle">Item Event</span>
+            </div>
+            <div class="detail-subitem" layout="column" ng-repeat="event in itemobj.event">
+              <div layout="row" layout-align="start center">
+                <span class="detail-subtitle" flex="15">Event-status:</span>
+                <md-input-container flex="60">
+                  <md-select ng-model="event.status">
+                    <md-option value="proposed">Proposed</md-option>
+                    <md-option value="draft">Draft</md-option>
+                    <md-option value="planned">Planned</md-option>
+                    <md-option value="requested">Requested</md-option>
+                    <md-option value="received">Received</md-option>
+                    <md-option value="accepted">Accepted</md-option>
+                    <md-option value="in-progress">In-Progress</md-option>
+                    <md-option value="review">Review</md-option>
+                    <md-option value="completed">Completed</md-option>
+                    <md-option value="cancelled">Cancelled</md-option>
+                    <md-option value="suspended">Suspended</md-option>
+                    <md-option value="rejected">Rejected</md-option>
+                    <md-option value="failed">Failed</md-option>
+                  </md-select>
+                </md-input-container>
+              </div>
+              <div layout="row" layout-align="start center">
+                <span class="detail-subtitle" flex="15">Event DateTime</span>
+                <div class="time-picker" layout="row" layout-padding flex="60">
+                  <mdp-date-picker mdp-placeholder="Date" ng-model="event.event_date" flex="50"></mdp-date-picker>
+                  <mdp-time-picker mdp-placeholder="Time" ng-model="event.event_time" flex="50"></mdp-time-picker>
+                </div>
+              </div>
+              <div layout="row" layout-align="start center" layout-padding>
+                <span class="detail-subtitle" flex="15">Event Actor </span>
+                <md-autocomplete flex="60"
+                    md-no-cache="true"
+                    md-selected-item="eventActorSelect"
+                    md-search-text="eventActorText"
+                    md-selected-item-change="itemeventActorChanged(item, $parent.$index, $index)"
+                    md-items="item in querySearch(eventActorText, event_actors)"
+                    md-item-text="item.display"
+                    md-min-length="0"
+                    placeholder="Please enter a subject">
+                  <md-item-template>
+                    <span md-highlight-text="eventActorText" md-highlight-flags="^i">{{item.display}}</span>
+                  </md-item-template>
+                  <md-not-found>
+                    No subject matching "{{eventActorText}}" were found.
+                  </md-not-found>
+                </md-autocomplete>
+                <span flex="20" class="small_text">{{event.actor.reference}}</span>
+              </div>
+              <div layout="row" layout-align="start center" layout-padding>
+                <span class="detail-subtitle" flex="15">Event Description</span>
+                <md-input-container flex="60">
+                  <md-select ng-model="event.description.coding[0].code">
+                    <md-option value=""></md-option>
+                    <md-option value="440622005">Specimen received</md-option>
+                    <md-option value="394838008">Test request</md-option>
+                    <md-option value="26895000">Laboratory test order cancellation</md-option>
+                  </md-select>
+                </md-input-container>
+              </div>
+            </div>
+            <div class="detail-subitem" layout="row" layout-align="center center">
+              <md-button ng-click="isAddEventHidden=!isAddEventHidden" class="md-primary md-raised" flex="20"><md-icon md-svg-src='/static/img/add.svg'></md-icon> Add Event</md-button>
+            </div>
+            <div class="detail-subitem" layout="column" ng-hide="isAddEventHidden">
+              <div layout="row" layout-align="center center">
+                <span class="detail-subtitle" flex="15">Event-status:</span>
+                <md-input-container flex="60">
+                  <md-select ng-model="newItemEvent_status">
+                    <md-option value="proposed">Proposed</md-option>
+                    <md-option value="draft">Draft</md-option>
+                    <md-option value="planned">Planned</md-option>
+                    <md-option value="requested">Requested</md-option>
+                    <md-option value="received">Received</md-option>
+                    <md-option value="accepted">Accepted</md-option>
+                    <md-option value="in-progress">In-Progress</md-option>
+                    <md-option value="review">Review</md-option>
+                    <md-option value="completed">Completed</md-option>
+                    <md-option value="cancelled">Cancelled</md-option>
+                    <md-option value="suspended">Suspended</md-option>
+                    <md-option value="rejected">Rejected</md-option>
+                    <md-option value="failed">Failed</md-option>
+                  </md-select>
+                </md-input-container>
+              </div>
+              <div layout="row" layout-align="center center">
+                <span class="detail-subtitle" flex="15">Event DateTime</span>
+                <div class="time-picker" layout="row" layout-padding flex="60">
+                  <mdp-date-picker mdp-placeholder="Date" ng-model="newItemEvent_date" flex="50"></mdp-date-picker>
+                  <mdp-time-picker mdp-placeholder="Time" ng-model="newItemEvent_time" flex="50"></mdp-time-picker>
+                </div>
+              </div>
+              <div layout="row" layout-align="center center" layout-padding>
+                <span class="detail-subtitle" flex="15">Event Actor </span>
+                <md-autocomplete flex="60"
+                    md-no-cache="true"
+                    md-selected-item="newItemeventActorSelect"
+                    md-search-text="newItemeventActorText"
+                    md-selected-item-change="newItemeventActorChanged(item)"
+                    md-items="item in querySearch(newItemeventActorText, event_actors)"
+                    md-item-text="item.display"
+                    md-min-length="0"
+                    placeholder="Please enter a subject">
+                  <md-item-template>
+                    <span md-highlight-text="newItemeventActorText" md-highlight-flags="^i">{{item.display}}</span>
+                  </md-item-template>
+                  <md-not-found>
+                    No subject matching "{{newItemeventActorText}}" were found.
+                  </md-not-found>
+                </md-autocomplete>
+              </div>
+              <div layout="row" layout-align="center center" layout-padding>
+                <span class="detail-subtitle" flex="15">Event Description</span>
+                <md-input-container flex="60">
+                  <md-select ng-model="newItemEvent_description">
+                    <md-option value=""></md-option>
+                    <md-option value="440622005">Specimen received</md-option>
+                    <md-option value="394838008">Test request</md-option>
+                    <md-option value="26895000">Laboratory test order cancellation</md-option>
+                  </md-select>
+                </md-input-container>
+              </div>
+            </div> -->
+          </div>
+          <div class="detail-subitem" layout="row" layout-align="center center">
+            <md-button ng-click="isItemHidden=!isItemHidden" class="md-primary md-raised" flex="20"><md-icon md-svg-src='/static/img/add.svg'></md-icon> New Item</md-button>
+          </div>
+          <div class="detail-subitem" ng-hide="isItemHidden" layout="column" layout-padding>
+            <div layout="row" layout-align="start center">
+              <span class="detail-subtitle" flex="15">Item Status</span>
+              <md-input-container flex="60">
+                <md-select ng-model="newItemStatus">
+                  <md-option value="proposed">Proposed</md-option>
+                  <md-option value="draft">Draft</md-option>
+                  <md-option value="planned">Planned</md-option>
+                  <md-option value="requested">Requested</md-option>
+                  <md-option value="received">Received</md-option>
+                  <md-option value="accepted">Accepted</md-option>
+                  <md-option value="in-progress">In-Progress</md-option>
+                  <md-option value="review">Review</md-option>
+                  <md-option value="completed">Completed</md-option>
+                  <md-option value="cancelled">Cancelled</md-option>
+                  <md-option value="suspended">Suspended</md-option>
+                  <md-option value="rejected">Rejected</md-option>
+                  <md-option value="failed">Failed</md-option>
+                </md-select>
+              </md-input-container>
+            </div>
+            <div layout="row" layout-align="start center">
+              <span class="detail-subtitle" flex="15">Item Code</span>
+              <md-autocomplete flex="60"
+                  md-no-cache="true"
+                  md-selected-item="newitemCodeSelect"
+                  md-search-text="newitemCodeText"
+                  md-selected-item-change="newitemCodeselected(item)"
+                  md-items="item in remoteAutoComplete(newitemCodeText, 'loinc_code')"
+                  md-item-text="item.display"
+                  md-min-length="0"
+                  placeholder="Please enter a subject">
+                <md-item-template>
+                  <span md-highlight-text="newitemCodeText" md-highlight-flags="^i">{{item.display}}</span>
+                </md-item-template>
+                <md-not-found>
+                  No subject matching "{{newitemCodeText}}" were found.
+                </md-not-found>
+              </md-autocomplete>
+            </div>
+            <div layout="row" layout-align="start center">
+              <span class="detail-subtitle" flex="15">Item Specimen</span>
+              <div class="detail-subitem" layout="column" flex="60">
+                <div ng-repeat="itemSpecimen in newItemSpecimens">{{itemSpecimen.reference}}</div>
+                <md-autocomplete
+                    md-no-cache="true"
+                    md-selected-item="newitemSpecimenSelect"
+                    md-search-text="newitemSpecimenText"
+                    md-selected-item-change="itemSpecimenChanged(item)"
+                    md-items="item in querySearch(newitemSpecimenText, specimens)"
+                    md-item-text="item.display"
+                    md-min-length="0"
+                    placeholder="Please enter a subject">
+                  <md-item-template>
+                    <span md-highlight-text="newitemSpecimenText" md-highlight-flags="^i">{{item.display}}</span>
+                  </md-item-template>
+                  <md-not-found>
+                    No subject matching "{{newitemSpecimenText}}" were found.
+                  </md-not-found>
+                </md-autocomplete>
+                <div flex="20" class="md-secondary detail-item-btn"><md-button ng-click="addNewItemSpecimen()"><md-icon md-svg-src="/static/img/add.svg"></md-icon></md-icon></md-button></div>
+              </div>
+            </div>
+            <div layout="row" layout-align="start center">
+              <span class="detail-subtitle" flex="15">Item bodySite</span>
+              <md-autocomplete flex="60"
+                  md-no-cache="true"
+                  md-selected-item="newitemBSSelect"
+                  md-search-text="newitemBSText"
+                  md-selected-item-change="newitemBSChanged(item)"
+                  md-items="item in remoteAutoComplete(newitemBSText, 'code')"
+                  md-item-text="item.display"
+                  md-min-length="0"
+                  placeholder="Please enter a subject">
+                <md-item-template>
+                  <span md-highlight-text="newitemBSText" md-highlight-flags="^i">{{item.display}}</span>
+                </md-item-template>
+                <md-not-found>
+                  No subject matching "{{newitemBSText}}" were found.
+                </md-not-found>
+              </md-autocomplete>
+            </div>
+            <!-- <div layout="row" layout-align="start center">
+              <span class="detail-subtitle">Item Event</span>
+            </div>
+            <div class="detail-subitem" layout="row" layout-align="center center">
+              <md-button ng-click="isAddEventHidden=!isAddEventHidden" class="md-primary md-raised" flex="15"><md-icon md-svg-src='/static/img/add.svg'></md-icon> New Item Event</md-button>
+            </div>
+            <div class="detail-subitem" layout="column" ng-hide="isAddEventHidden">
+              <div layout="row" layout-align="center center">
+                <span class="detail-subtitle" flex="15">Event-status:</span>
+                <md-input-container flex="60">
+                  <md-select ng-model="newEvent_status">
+                    <md-option value="proposed">Proposed</md-option>
+                    <md-option value="draft">Draft</md-option>
+                    <md-option value="planned">Planned</md-option>
+                    <md-option value="requested">Requested</md-option>
+                    <md-option value="received">Received</md-option>
+                    <md-option value="accepted">Accepted</md-option>
+                    <md-option value="in-progress">In-Progress</md-option>
+                    <md-option value="review">Review</md-option>
+                    <md-option value="completed">Completed</md-option>
+                    <md-option value="cancelled">Cancelled</md-option>
+                    <md-option value="suspended">Suspended</md-option>
+                    <md-option value="rejected">Rejected</md-option>
+                    <md-option value="failed">Failed</md-option>
+                  </md-select>
+                </md-input-container>
+              </div>
+              <div layout="row" layout-align="center center">
+                <span class="detail-subtitle" flex="15">Event DateTime</span>
+                <div class="time-picker" layout="row" layout-padding flex="60">
+                  <mdp-date-picker mdp-placeholder="Date" ng-model="newEvent_date" flex="50"></mdp-date-picker>
+                  <mdp-time-picker mdp-placeholder="Time" ng-model="newEvent_time" flex="50"></mdp-time-picker>
+                </div>
+              </div>
+              <div layout="row" layout-align="center center" layout-padding>
+                <span class="detail-subtitle" flex="15">Event Actor </span>
+                <md-autocomplete flex="60"
+                    md-no-cache="true"
+                    md-selected-item="neweventActorSelect"
+                    md-search-text="neweventActorText"
+                    md-selected-item-change="neweventActorChanged(item)"
+                    md-items="item in querySearch(neweventActorText, event_actors)"
+                    md-item-text="item.display"
+                    md-min-length="0"
+                    placeholder="Please enter a subject">
+                  <md-item-template>
+                    <span md-highlight-text="neweventActorText" md-highlight-flags="^i">{{item.display}}</span>
+                  </md-item-template>
+                  <md-not-found>
+                    No subject matching "{{neweventActorText}}" were found.
+                  </md-not-found>
+                </md-autocomplete>
+              </div>
+              <div layout="row" layout-align="center center" layout-padding>
+                <span class="detail-subtitle" flex="15">Event Description</span>
+                <md-input-container flex="60">
+                  <md-select ng-model="newEvent_description">
+                    <md-option value=""></md-option>
+                    <md-option value="440622005">Specimen received</md-option>
+                    <md-option value="394838008">Test request</md-option>
+                    <md-option value="26895000">Laboratory test order cancellation</md-option>
+                  </md-select>
+                </md-input-container>
+              </div>
+            </div> -->
+            <div layout="row" layout-align="center center">
+              <md-button class="md-raised md-primary" ng-click="addItem()">Add Item</md-button>
+            </div>
+          </div>
+        </div><!-- div.detail-content-->
+      </div><!--div.detail-item -->
+    </div><!--div.contents -->
+  </md-dialog-content><!-- md-dialog-content -->
+  <md-dialog-actions layout="row" layout-padding>
+		<md-button ng-click="hide()">
+        Cancel
+      </md-button>
+      <md-button class="md-primary md-raised" ng-click="submit_order()">
+       	Save
+      </md-button>
+	</md-dialog-actions>
+</md-dialog><!--.order-detail-dialog -->

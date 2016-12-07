@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="diagnostic_order">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+	<title>Diagnostic Order</title>
+	<link rel="stylesheet" href="/static/css/angular-material.css">
+	<link rel="stylesheet" href="/static/css/bootstrap.css">
+	<link rel="stylesheet" href="/static/css/main.css">
+	<link rel="stylesheet" href="/static/css/datatable.css">
+	<link rel="stylesheet" href="/static/css/mdPickers.css">
+	<script src="/static/js/angular.min.js"></script>
+  <script src="/static/js/angular-aria.min.js"></script>
+  <script src="/static/js/angular-animate.min.js"></script>
+  <script src="/static/js/angular-route.min.js"></script>
+  <script src="/static/js/angular-material.js"></script>
+  <script src="/static/js/angular-messages.min.js" charset="utf-8"></script>
+	<script src="/static/js/moment.js" charset="utf-8"></script>
+	<script src="/static/js/mdPickers.min.js"></script>
+	<script src="/static/js/index.js"></script>
+  <script src="/static/js/controllers.js"></script>
+	<script>
+		moment().format();
+	</script>
+</head>
+<body ng-cloak>
+	<div class="out-board" layout="row" flex>
+		<md-sidenav layout="column" flex="20" class="md-sidenav-left md-whiteframe-z2 ng-isolate-scope main-nav nav-content-bgcolor" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+      <md-toolbar class="md-theme-indigo">
+        <img class="logo-img" src="/static/img/smart.png" alt="logo" class="img-responsive">
+        <h1 class="md-toolbar-tools">Diagnostic Order</h1>
+      </md-toolbar>
+      <md-content flex class="nav-content" layout-padding>
+        <md-list ng-cloak>
+          <md-list-item class="list-btn">
+            <a ng-href="#/orders" class="md-button md-primary">Orders</a>
+          </md-list-item>
+          <md-divider></md-divider>
+					<md-list-item class="list-btn">
+						<md-button class="md-raised md-primary"><md-icon md-svg-src="/static/img/Edit.svg"></md-icon> New Order</md-button>
+					</md-list-item>
+        </md-list>
+      </md-content>
+    </md-sidenav>
+    <div class="main" ng-view layout="row" flex></div>
+	</div>
+</body>
+</html>

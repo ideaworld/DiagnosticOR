@@ -14,7 +14,7 @@ CLINICAL = {
 }
 # OAuth2 settings for communicating with genomic server
 GENOMICS = {
-    'client_id': '1616ac36-0e85-4b81-89be-b5922bd7247b',
+    'client_id': 'c9b6762c-fd94-4ea2-86e3-9ad5ac50e904',
     'redirect_uri': 'http://localhost:8000/recv_redirect/',
     'scopes': ['user/Sequence.read', 'user/Patient.read','user/Sequence.write'],
     'oauth_base': 'http://genomics-advisor.smartplatforms.org:8005/auth',
@@ -28,11 +28,11 @@ SECRET_KEY = 'hello, world!'
 GOOGLE_API_KEY = 'AIzaSyB01GeX_HiuZbHCkZ-P5hJ7yUHVkwFS07Q'
 
 CLIENT_ID ='e29fb523-1489-47bb-b163-39b5cae866e8'
-GENOMIC_ID = '1616ac36-0e85-4b81-89be-b5922bd7247b'
+GENOMIC_ID = 'c9b6762c-fd94-4ea2-86e3-9ad5ac50e904'
 GENOMICSCOPE = [
-'user/Sequence.read', 
+'user/Sequence.read',
 'user/Patient.read',
-'user/Sequence.write', 
+'user/Sequence.write',
 'user/Observation.read',
 'user/Specimen.read',
 'user/Practitioner.read',
@@ -43,7 +43,9 @@ GENOMICSCOPE = [
 'user/observationforgenetics.read',
 'user/observationforgenetics.write',
 'user/Encounter.read',
-'user/Organization.read'
+'user/Organization.read',
+'user/DiagnosticOrder.read',
+'user/DiagnosticOrder.write'
 ]
 SCOPES = [
 'launch',
@@ -184,7 +186,7 @@ INDENTIFIER = [
 
 testJ = {
     'resourceType': 'orderforgenetics',
-    'status': 'requested',    
+    'status': 'requested',
     'reason': [
         {
             'text': '1',
