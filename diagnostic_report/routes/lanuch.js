@@ -28,7 +28,7 @@ function get_clinical_auth(req, res){
 	var client_id = config.clinical_client_id;
 	var serviceUri = req.query.iss;
 	var launchContextId = req.query.launch;
-	var scope = ['user/*.*'].join(' ');
+	var scope = ['launch','launch/patient','launch/encounter','patient/*.read','user/*.*','user/*.read','openid','profile'].join(' ');
 	var launchUri = config.clinical_launch_uri;
 	var redirectUri = config.clinical_redirect_uri;
 	var auth_uri = config.clinical_auth_uri;

@@ -428,11 +428,11 @@ function get_ref(regx, sub){
 function form_report_json(info){
   var res_json = {
       "diagnostic_order" : {
-        "resourceType": "orderforgenetics",
+        "resourceType": "DiagnosticRequest",
         "subject": {
           "reference": info.subject
         },
-        "orderer":{
+        "requester":{
           "reference": info.orderer,
         },
         "identifier": [
@@ -473,8 +473,8 @@ function form_report_json(info){
           }
         ],
       },
-      "order":{
-        "resourceType": "Order",
+      "requester":{
+        "resourceType": "Requester",
         "identifier": [
           {
             "system": info.id_system,

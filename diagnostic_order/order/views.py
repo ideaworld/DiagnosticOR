@@ -28,7 +28,8 @@ def get_ref(key, data):
   return order
 
 def check_order(request):
-  data = search(request, 'orderforgenetics')
+  data = search(request, 'DiagnosticRequest')
+  print data
   return HttpResponse(json.dumps(data), content_type="application/json")
 
 def new_order(request):
@@ -47,7 +48,7 @@ def get_ID(str):
 
 def order_detail(request, id):
 
-  order = read_api(request, id, 'orderforgenetics')
+  order = read_api(request, id, 'DiagnosticRequest')
   print order
   subject = read_api(request, get_ID(order['subject']['reference']), get_name(order['subject']['reference']))
   subject = subject['name'][0]['text']
@@ -130,6 +131,7 @@ def launch(request):
         'response_type':'code',
         'redirect_uri':REDIRECT_URI
     }
+    print args
     re = 'http://genomics-advisor.smartplatforms.org:2048/auth/authorize?'+ urlencode(args)
     resp = HttpResponseRedirect(re)
     return resp
@@ -272,7 +274,7 @@ def search_sptInfo(request):
 
 def search_Observation(request):
   subject = request.GET.get('subject')
-  subject = 'observationforgenetics'
+  subject = 'Observation'
   order_search = search(request, subject)
 
   datas = []
@@ -364,7 +366,7 @@ def submit(request):
 
 
 def edit(request, id):
-  order_search = search(request, 'orderforgenetics', {'id':id})
+  order_search = search(request, 'DiagnosticRequest', {'id':id})
   entry = order_search['entry']
   order = None
   for e in entry:
@@ -411,8 +413,8 @@ def update_order(request):
     order = req['order']
     oid = req['id']
     access_token = request.COOKIES['genomic_access_token']
-    print '%s/orderforgenetics/%s' %(API_BASE,oid)
-    resp = requests.put('%s/orderforgenetics/%s?_format=json' %(API_BASE,oid),
+    print '%s/DiagnosticRequest/%s' %(API_BASE,oid)
+    resp = requests.put('%s/DiagnosticRequest/%s?_format=json' %(API_BASE,oid),
               data=order,
               headers={'Content-Type':'application/json','Authorization':'Bearer %s'% access_token})
     print resp.text
@@ -435,7 +437,7 @@ def updata(request):
   #dorder['identifier'][0]['value'] = order_id["id"]
   print '-'*20
   print dorder
-  resp = requests.post('%s/orderforgenetics?_format=json'% API_BASE,
+  resp = requests.post('%s/DiagnosticRequest?_format=json'% API_BASE,
             data=json.dumps(dorder),
             headers={'Authorization': 'Bearer %s'% access_token})
   print 'Diagnostic Order is ok'
@@ -466,7 +468,7 @@ def updataOrder(request):
   #print resp.json()
   dorder_id = req["id"]
 
-  resp = requests.post('%s/orderforgenetics?_format=json' %(API_BASE),
+  resp = requests.post('%s/DiagnosticRequest?_format=json' %(API_BASE),
             data=json.dumps(order),
             headers={'Content-Type':'application/json','Authorization':'Bearer %s'% access_token})
   print resp.text
@@ -478,7 +480,7 @@ def test(request):
   args['session'] = request.COOKIES['genomic_access_token']
   #order_search = upload_seq(request, testJson)
   #order_search = delete(request, 'orderforgenetics', '35948c17-3c0d-4d05-a3b5-e34bae4b71d7')
-  order_search = call_api('/orderforgenetics', args)
+  order_search = call_api('/DiagnosticRequest', args)
 
   return render(request, 'test.html', {'data':order_search})
   #upload_seq(request, testJson)
@@ -497,7 +499,7 @@ def all_typedata(request):
     res_data = call_api('/%s'%data_type, args)
   return HttpResponse(json.dumps(res_data), content_type="application/json")
 
-def read_api(request, id, url='orderforgenetics'):
+def read_api(request, id, url='DiagnosticRequest'):
     access_token = request.COOKIES['genomic_access_token']
     resp = requests.get('%s/%s/%s?_format=json'%(API_BASE, url, id),
               headers={'Accept': 'application/json',
@@ -505,9 +507,9 @@ def read_api(request, id, url='orderforgenetics'):
     return resp.json()
 
 
-def upload_seq(request, seq, url='orderforgenetics'):
+def upload_seq(request, seq, url='DiagnosticRequest'):
     access_token = request.COOKIES['genomic_access_token']
-    resp = requests.post('%s/orderforgenetics?_format=json'% API_BASE,
+    resp = requests.post('%s/DiagnosticRequest?_format=json'% API_BASE,
             data=json.dumps(seq),
             headers={'Authorization': 'Bearer %s'% access_token})
     return resp.json()

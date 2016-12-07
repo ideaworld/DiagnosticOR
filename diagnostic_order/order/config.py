@@ -1,6 +1,6 @@
 # OAuth2 settings for communicating with clinical server
 CLINICAL = {
-    'client_id': '5e3a370c-1fff-41d6-a4ef-d177c19357e7',
+    'client_id': '8fd6d8c0-dd8a-4502-bbd8-0964af52b83d',
     'redirect_uri': 'http://localhost:8000/',
     'scopes': [
                'launch',
@@ -8,17 +8,19 @@ CLINICAL = {
                'launch/encounter',
                'patient/*.read',
                'user/*.*',
+               'user/*.read',
                'openid',
                'profile'
-               ]
+               ],
+    'regi_token':'eyJhbGciOiJSUzI1NiJ9.eyJhdWQiOlsiOGZkNmQ4YzAtZGQ4YS00NTAyLWJiZDgtMDk2NGFmNTJiODNkIl0sImlzcyI6Imh0dHBzOlwvXC9hdXRob3JpemUtZHN0dTIuc21hcnRoZWFsdGhpdC5vcmdcLyIsImp0aSI6IjZhMjhlNGQwLWYxOWMtNDgxNy1hZDQ2LTA5YTAyODI5NjIyMSIsImlhdCI6MTQ4MTEzODg2NX0.k7YWUMcN5ounG1pZcKOx_bUcbyFCEL5JmJXtH1fj-Qvhp_1C4l-bSEMQJyB3V_vSsAL16ABkIcDYOEc7p__00GtmitQVLACmWuNrPhhVFxnWFwlAd7Rji8-96hJV1svd-IWjvvRdZjGDsVEoILyuPHZsIP0fLgD-y2VQj5tksWc'
 }
 # OAuth2 settings for communicating with genomic server
 GENOMICS = {
-    'client_id': 'c9b6762c-fd94-4ea2-86e3-9ad5ac50e904',
+    'client_id': '72e79c01-b153-4656-8350-7d85761451b7',
     'redirect_uri': 'http://localhost:8000/recv_redirect/',
     'scopes': ['user/Sequence.read', 'user/Patient.read','user/Sequence.write'],
-    'oauth_base': 'http://genomics-advisor.smartplatforms.org:8005/auth',
-    'api_base': 'http://genomics-advisor.smartplatforms.org:8005/api'
+    'oauth_base': 'http://genomics-advisor.smartplatforms.org:2048/auth',
+    'api_base': 'http://genomics-advisor.smartplatforms.org:2048/api'
 
 }
 
@@ -28,7 +30,7 @@ SECRET_KEY = 'hello, world!'
 GOOGLE_API_KEY = 'AIzaSyB01GeX_HiuZbHCkZ-P5hJ7yUHVkwFS07Q'
 
 CLIENT_ID ='e29fb523-1489-47bb-b163-39b5cae866e8'
-GENOMIC_ID = 'c9b6762c-fd94-4ea2-86e3-9ad5ac50e904'
+GENOMIC_ID = '72e79c01-b153-4656-8350-7d85761451b7'
 GENOMICSCOPE = [
 'user/Sequence.read',
 'user/Patient.read',
@@ -36,16 +38,14 @@ GENOMICSCOPE = [
 'user/Observation.read',
 'user/Specimen.read',
 'user/Practitioner.read',
-'user/Order.read',
-'user/Order.write',
-'user/orderforgenetics.read',
-'user/orderforgenetics.write',
-'user/observationforgenetics.read',
-'user/observationforgenetics.write',
+# 'user/Requester.read',
+# 'user/Requester.write',
+'user/DiagnosticRequest.read',
+'user/DiagnosticRequest.write',
+'user/Observation.read',
+'user/Observation.write',
 'user/Encounter.read',
-'user/Organization.read',
-'user/DiagnosticOrder.read',
-'user/DiagnosticOrder.write'
+'user/Organization.read'
 ]
 SCOPES = [
 'launch',

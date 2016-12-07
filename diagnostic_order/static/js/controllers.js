@@ -31,6 +31,7 @@ DOController.controller('MainListCtrl', function($scope, $http, $location, $mdDi
   }
   $scope.check_condition();
 	$scope.showOrderDetail = function(ev, index){
+		console.log('a')
     var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
     $mdDialog.show({
       controller:orderDetailCtrl,
