@@ -123,5 +123,5 @@ dist/*
 include/
 pip-selfcheck.json
 
-
+/diagnostic_order/order/*.pyc
 
