@@ -123,6 +123,5 @@ dist/*
 include/
 pip-selfcheck.json
 
-*.pyc
 
 

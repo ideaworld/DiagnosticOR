@@ -29,7 +29,6 @@ def get_ref(key, data):
 
 def check_order(request):
   data = search(request, 'DiagnosticRequest')
-  print data
   return HttpResponse(json.dumps(data), content_type="application/json")
 
 def new_order(request):
