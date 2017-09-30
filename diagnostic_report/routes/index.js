@@ -4,7 +4,6 @@ var router = express.Router();
 var config = require('../controllers/configs.js');
 var request = require('request');
 var requestify = require('requestify');
-var mkFhir = require('fhir.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
