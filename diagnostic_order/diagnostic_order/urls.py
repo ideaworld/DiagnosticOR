@@ -1,7 +1,7 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.contrib import admin
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Examples:
     # url(r'^$', 'diagnostic_order.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
@@ -27,4 +27,4 @@ urlpatterns = patterns('',
     url(r'^getall', 'order.views.all_typedata', name="all_typedata"),
     url(r'^getcode', 'order.views.search_code', name="search_code"),
     url(r'^update', 'order.views.update_order')
-)
+]

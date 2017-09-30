@@ -116,6 +116,7 @@ pip-delete-this-directory.txt
 
 */dist
 */.bin
+/diagnostic_order/bin/*
 node_modules/*
 dist/*
 
