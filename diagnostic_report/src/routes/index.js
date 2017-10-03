@@ -4,16 +4,20 @@ var router = express.Router();
 var config = require('../controllers/configs.js');
 var request = require('request');
 var requestify = require('requestify');
+var path = require('path');
+
+import superagent from 'superagent';
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+	// console.log('111');
 	if (!req.session.code) {
 		getCode(req, res);
 	}
-	if(!req.session.clinical_access_token){
-		get_clinical_token(req, res);
-	}
-  res.render('index.html', {});
+	// if(!req.session.clinical_access_token){
+	// 	get_clinical_token(req, res);
+	// }
+	res.sendfile('src/views/index.html');
 });
 
 function getCode(req, res) {
@@ -22,19 +26,27 @@ function getCode(req, res) {
 		'client_id': config.clinical_client_id,
 		'redirect_uri': config.clinical_redirect_uri,
 	}
-	const opt = {
-		method:'GET',
-		url: config.clinical_auth_uri,
-		headers: {
-			"Content-Type": 'application/x-www-form-urlencoded',
-			"Content-Length" : data.length,
-		},
-		form:data
-	};
+	// const opt = {
+	// 	method:'GET',
+	// 	url: config.clinical_auth_uri,
+	// 	headers: {
+	// 		"Content-Type": 'application/x-www-form-urlencoded',
+	// 		"Content-Length" : data.length,
+	// 	},
+	// 	form:data
+	// };
 
-	request(opt, function(err, res, body) {
-		console.log('code 0', body);
-	})
+	// request.get(config.clinical_auth_uri)
+
+	// request(opt, function(err, res, body) {
+	// 	console.log('code 0', body);
+	// })
+	console.log('query');
+	superagent.get('http://guidance.site:4000/api/oauth/authorize')
+		.query(data)
+		.end((err, request) => {
+			console.log(err, request);
+		});
 }
 
 function get_clinical_token(req, res){

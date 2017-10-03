@@ -1,7 +1,10 @@
 import gulp from 'gulp';
 import sourcemaps from 'gulp-sourcemaps';
+import gulpLoadPlugins from 'gulp-load-plugins';
 import babel from 'gulp-babel';
 import nodemon from 'gulp-nodemon';
+
+const $ = gulpLoadPlugins();
 
 gulp.task('es6', () => gulp.src('src/**/*.js')
     .pipe(sourcemaps.init())
@@ -9,8 +12,8 @@ gulp.task('es6', () => gulp.src('src/**/*.js')
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('dist')));
 
-gulp.task('styles', () => gulp.src('public/*')
-    .pipe(gulp.dest('dist/public')));
+gulp.task('views', () => gulp.src('src/views/**/*.*')
+  .pipe(gulp.dest('dist/views')));
 
 gulp.task('default', () => {
   gulp.watch('src/**/*.js', ['es6']);
@@ -24,7 +27,13 @@ gulp.task('start', () => {
   });
 });
 
-gulp.task('watch', ['es6', 'styles'], () => {
+gulp.task('clean' , function(){
+  return gulp.src([
+     'dist', //删除dist整个文件夹
+    ] ).pipe($.clean());
+});
+
+gulp.task('watch', ['es6', 'views'], () => {
   return nodemon({
     script: 'bin/www',
     watch: 'src',

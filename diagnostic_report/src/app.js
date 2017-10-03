@@ -22,7 +22,7 @@ var data_trans = require('./routes/data_trans.js');
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '../src/views'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
