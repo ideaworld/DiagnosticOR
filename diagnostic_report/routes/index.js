@@ -33,7 +33,7 @@ function getCode(req, res) {
 	};
 
 	request(opt, function(err, res, body) {
-		console.log(body);
+		console.log('code 0', body);
 	})
 }
 
