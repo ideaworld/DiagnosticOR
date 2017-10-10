@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
 	// if(!req.session.clinical_access_token){
 	// 	get_clinical_token(req, res);
 	// }
-	res.sendfile('src/views/index.html');
+	// res.sendfile('src/views/index.html');
 });
 
 function getCode(req, res) {
@@ -25,36 +25,24 @@ function getCode(req, res) {
 		'response_type': 'code',
 		'client_id': config.clinical_client_id,
 		'redirect_uri': config.clinical_redirect_uri,
+		'scope': 'user/List.*'
 	}
-	// const opt = {
-	// 	method:'GET',
-	// 	url: config.clinical_auth_uri,
-	// 	headers: {
-	// 		"Content-Type": 'application/x-www-form-urlencoded',
-	// 		"Content-Length" : data.length,
-	// 	},
-	// 	form:data
-	// };
 
-	// request.get(config.clinical_auth_uri)
-
-	// request(opt, function(err, res, body) {
-	// 	console.log('code 0', body);
-	// })
-	console.log('query');
-	superagent.get('http://guidance.site:4000/api/oauth/authorize')
-		.query(data)
-		.end((err, request) => {
-			console.log(err, request);
+	console.log('querys', data);
+	superagent.get('http://guidance.site:3000/api/oauth/authorize?response_type=code&client_id=b66eb22c-88aa-4d20-8894-4dadf31e2b24&redirect_uri=http://localhost:8101/redirect/&scope=user/Patient.*+user/Subscription.*')
+		.end((request) => {
+			console.log('dsdf', request);
+			get_clinical_token(request, res);
 		});
 }
 
 function get_clinical_token(req, res){
 	var code = req.query.code;
 	var state = req.query.state;
-	var token_uri = req.session.auth_infos['token_url'] ? req.session.auth_infos['token_url'] : config.clinical_token_uri;
+	var token_uri = req.session.auth_infos && req.session.auth_infos['token_url'] ? req.session.auth_infos['token_url'] : config.clinical_token_uri;
 	var client_id = config.clinical_client_id;
 	var redirect_uri = config.clinical_redirect_uri;
+
 	var datas = {
 		'code':code,
 		'grant_type': 'authorization_code',
@@ -62,6 +50,7 @@ function get_clinical_token(req, res){
 		'client_id': client_id,
 		'state':state
 	}
+	console.log(datas);
 	var opt = {
 		method:'POST',
 		url: token_uri,
